@@ -5,9 +5,10 @@
   --color-primary-light: #E5F5E6;  /* light green tints/backgrounds */
 
   --color-secondary: #863DA6;      /* secondary buttons e.g. "Create Exam", links */
-  --color-secondary-light: #E08FFF; /* "Playful Interface" card background */
+  --color-secondary-light: #F2E7FC; /* "Playful Interface" card background — updated to match confirmed teammate render */
   --color-secondary-pale: #ECDEEE; /* icon circle bg, confirmed on Home page */
   --color-secondary-badge: #FEF7FF; /* "Infinite Wonder" badge bg — near-white purple tint */
+  --color-secondary-title: #661A86; /* card title text on purple/tinted cards — darker than default secondary */
 
   --color-accent-pink: #F8D8FF;    /* "Track Your Grades" icon circle bg */
   --color-accent-dark: #655B68;    /* "Earn High Scores" icon/divider — muted plum */
@@ -19,7 +20,7 @@
 
   /* ===== Background Colors ===== */
   --color-background: #FFFFFF;
-  --color-background-alt: #E2E9ED; /* "Professional Tools" card bg, footer bg (confirmed match) */
+  --color-background-alt: #ebf1f5; /* "Professional Tools" card bg, footer bg — updated to match confirmed teammate render */
   --color-background-muted: #EEF5F7; /* navbar bg + team card bg (confirmed match) */
   --color-background-sidebar: #016E1B;
   --color-background-input: #F4FAFD; /* form input fill, sampled from login/contact forms */
@@ -48,10 +49,11 @@
   --font-size-base: 1rem;    /* 16px — body text */
   --font-size-lg: 1.25rem;   /* 20px — h3, estimated (not measured) */
   --font-size-xl: 2rem;      /* 32px — h2, estimated (not measured) */
-  --font-size-2xl: 3.75rem;  /* 60px — h1, measured from "Master Science" cap-height on Home page */
+  --font-size-2xl: 2.5rem;  /* 60px — h1, measured from "Master Science" cap-height on Home page */
 
   /* Font weights */
   --font-weight-normal: 400;
+  --font-weight-md: 600;
   --font-weight-bold: 700;
 
   /* Line heights */
@@ -67,9 +69,10 @@
   --spacing-2xl: 48px;
 
   /* ===== Border Radius ===== */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;   /* was 12px — target hero card corners are noticeably softer/larger */
+  --radius-xl: 50px;   /* new — for the largest containers, if needed */
   --radius-full: 9999px;
 
   /* ===== Shadows ===== */

@@ -1,0 +1,109 @@
+.hero {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin: var(--spacing-lg) auto;
+  max-width: 1200px;
+}
+
+.hero__title,
+.hero__text {
+  color: var(--color-text-inverse);
+}
+
+
+.hero__text {
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+}
+
+.hero__btn {
+  width: 225px;
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  text-align: center;
+}
+
+.hero__image-wrapper {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.hero__image {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+}
+
+.mission {
+  padding: var(--spacing-2xl) 0;
+}
+
+.mission__panel {
+  height: 100%;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) var(--spacing-xl);
+  border-left: 4px solid var(--color-primary-dark);
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.mission__title {
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.mission__text {
+  margin-bottom: var(--spacing-lg);
+}
+
+.growth {
+  padding-bottom: var(--spacing-2xl);
+}
+
+.growth__panel {
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.growth__image {
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.growth__title {
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.growth__text {
+  margin-bottom: var(--spacing-md);
+}
+
+.growth__caption {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-dark);
+  font-weight: var(--font-weight-bold);
+}
+
+.team {
+  padding-bottom: var(--spacing-2xl);
+}
+
+.team__title {
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.team__subtitle {
+  max-width: 500px;
+  margin: 0 auto var(--spacing-xl);
+}
+
+.team .row > * {
+  margin-bottom: var(--spacing-lg);
+}

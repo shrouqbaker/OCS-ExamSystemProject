@@ -10,7 +10,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
-  background-color: var(--color-background);
+  background-color: var(--color-background-muted);
 }
 
 /* ===== Headings ===== */
@@ -18,7 +18,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-heading);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-md);
   line-height: var(--line-height-heading);
   color: var(--color-text-primary);
 }
