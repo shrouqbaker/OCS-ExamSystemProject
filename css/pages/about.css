@@ -20,8 +20,6 @@
   width: 225px;
   background-color: var(--color-background);
   color: var(--color-primary);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-full);
   text-decoration: none;
   text-align: center;
 }
