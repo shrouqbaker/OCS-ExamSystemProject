@@ -1,0 +1,104 @@
+/* ===== ABOUT PAGE */
+/* ===== Badge ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.badge--green {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+}
+
+.badge--purple {
+  background-color: var(--color-secondary-badge);
+  color: var(--color-secondary);
+}
+
+/* ===== Card ===== */
+.card {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border-left: 4px solid transparent;
+}
+
+.card--purple {
+  background-color: var(--color-secondary-light);
+  border-left-color: var(--color-secondary);
+}
+
+.card--gray {
+  background-color: var(--color-background-alt);
+  border-left-color: var(--color-text-secondary);
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.card--purple .card__title {
+  color: var(--color-secondary-title);
+}
+
+.card__text {
+  margin: 0;
+}
+
+/* ===== Team Card ===== */
+.team-card {
+  background-color: var(--color-background-alt);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+}
+
+.team-card__avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--color-background);
+  margin: 0 auto var(--spacing-md);
+  object-fit: cover;
+}
+
+.team-card__name {
+  margin-bottom: var(--spacing-xs);
+}
+
+.team-card__role {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-sm);
+}
+
+.team-card__quote {
+  font-style: italic;
+  font-size: var(--font-size-sm);
+}
+
+/* ===== Progress Bar ===== */
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-success-bg);
+  border-radius: var(--radius-full);
+  margin: var(--spacing-md) 0 var(--spacing-xs);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 75%;
+  background-color: var(--color-primary-dark);
+  border-radius: var(--radius-full);
+}
