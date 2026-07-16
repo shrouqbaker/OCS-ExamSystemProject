@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ScienceNest - Contact Us</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -19,7 +20,7 @@
           </div>
           <div class="col-lg-8 text-center">
             <span class="badge badge--green">
-              <span class="icon">🚀</span> Ready to Explore?
+              <i class="fa-solid fa-rocket icon"></i> Ready to Explore?
             </span>
             <h1 class="contact-hero__title">Let's Start a Reaction!</h1>
             <p class="contact-hero__text">Have questions? Our lab assistants are here to help you navigate through the ScienceNest universe.</p>
@@ -31,13 +32,13 @@
 
     <section class="contact">
       <div class="container">
-        <div class="row g-4">
+        <div class="row g-4 align-items-stretch">
 
           <div class="col-lg-6">
-            <div class="form-card">
+            <div class="form-card h-100">
               <div class="d-flex justify-content-between align-items-start">
                 <h2 class="form-card__title">Send us a Message</h2>
-                <span class="icon form-card__icon">✉️</span>
+                <i class="fa-regular fa-envelope icon form-card__icon"></i>
               </div>
 
               <form>
@@ -52,12 +53,7 @@
                   </div>
                   <div class="col-12">
                     <label for="title">Title</label>
-                    <select id="title" name="title" class="inp w-100">
-                      <option value="" selected disabled></option>
-                      <option value="general">General Question</option>
-                      <option value="support">Technical Support</option>
-                      <option value="partnership">Partnership</option>
-                    </select>
+                    <input type="text" id="title" name="title" placeholder="e.g. Lab Assistant, Researcher" class="inp w-100">
                   </div>
                   <div class="col-12">
                     <label for="message">Your Findings (Message)</label>
@@ -65,7 +61,7 @@
                   </div>
                   <div class="col-12">
                     <button type="submit" class="btn btn--primary">
-                      <span class="icon">➤</span> Send Message
+                      <i class="fa-solid fa-paper-plane icon"></i> Send Message
                     </button>
                   </div>
                 </div>
@@ -74,12 +70,12 @@
           </div>
 
           <div class="col-lg-6 d-flex flex-column gap-4">
-            <div class="info-card">
+            <div class="info-card flex-grow-1">
               <h2 class="info-card__title text-center">Reach Out Directly</h2>
               <p class="info-card__text text-center">Our assistants are monitoring the radio waves 24/7.</p>
 
               <div class="contact-method">
-                <span class="icon contact-method__icon contact-method__icon--purple">@</span>
+                <i class="fa-solid fa-at icon contact-method__icon contact-method__icon--purple"></i>
                 <div>
                   <span class="contact-method__label">Send an Email</span>
                   <span class="contact-method__value">hello@sciencenest.edu</span>
@@ -87,7 +83,7 @@
               </div>
 
               <div class="contact-method">
-                <span class="icon contact-method__icon contact-method__icon--green">📞</span>
+                <i class="fa-solid fa-phone icon contact-method__icon contact-method__icon--green"></i>
                 <div>
                   <span class="contact-method__label">Voice Call</span>
                   <span class="contact-method__value">+1 (555) LAB-CHAT</span>
@@ -98,9 +94,9 @@
             <div class="community-card text-center">
               <span class="community-card__title">Connect With Our Community</span>
               <div class="d-flex justify-content-center gap-3">
-                <span class="icon social-icon">🌐</span>
-                <span class="icon social-icon">🤖</span>
-                <span class="icon social-icon">📺</span>
+                <i class="fa-solid fa-globe icon social-icon"></i>
+                <i class="fa-solid fa-robot icon social-icon"></i>
+                <i class="fa-solid fa-play icon social-icon"></i>
               </div>
             </div>
           </div>
