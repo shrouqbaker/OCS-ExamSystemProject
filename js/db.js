@@ -231,7 +231,7 @@ function seedDatabase() {
 seedDatabase()
 
 
-//AUTHENTICATION
+    //AUTHENTICATION
 
 function login(username, password) {
     const user = getUserByUsername(username)
@@ -260,7 +260,7 @@ function addStudent(fullName, gender, nationalId, phone, username, password) {
     return addUser('student', fullName, gender, nationalId, phone, username, password, '', 0);
 }
 
-//AUTHORIZATION
+    //AUTHORIZATION
 function requireRole(role) {
     const curr = getCurrent('currentUser');
     if (!curr || curr.role !== role) {
@@ -269,9 +269,81 @@ function requireRole(role) {
 }
 
 
-//quick lookup
+    //quick lookup
 function getUserByUsername(username) {
     return getUsers().find(u => u.username === username) || null;
+}
+function getQuestionsByExam(examId){
+    return getQuestions()
+        .filter(question => question.examId === examId)
+        .sort((a, b) => a.order - b.order);
+}
+
+    //teacher/dashboard.html 
+    //teacher/students.html
+function getStudents(){
+    return getUsers().filter(user => user.role === "student") 
+}
+
+    //teacher/exams.html
+function getExamsByTeacher(teacherId){
+    return getExams().filter(exam => exam.createdBy === teacherId)
+}
+
+    //student/dashboard.html
+    //student/exams.html
+function getActiveExams(){
+    return getExams().filter(exam => exam.status === "active")
+}
+
+    //student/history.html
+    //student/dashboard.html
+function getResultsByStudent(studentId){
+    return getResults().filter(result => result.studentId === studentId)
+}
+
+    //Teacher/dashboard.html
+function getResultsByExam(examId){
+    return getResults().filter(result => result.examId === examId)
+}
+
+    //student/exams.html
+    //student/take-exam.html
+function hasStudentTakenExam(studentId, examId){
+    const flags = getResults().map(result => result.studentId === studentId && result.examId === examId)
+    
+    return flags.some(flag => flag === true)
+}
+    //teacher/exams.html
+function updateExamStatus(examId, status){
+    const exams = getExams();
+    const exam = exams.find(e => e.id === examId);
+    if (!exam) return null;
+    exam.status = status;
+    setTable('exams', exams);
+    return exam;
+}
+    //student/dashboard.html
+    //student/exams.html
+function getAvailableExamsForStudent(studentId){
+    const active = getActiveExams()
+    const available = []
+    active.filter(exam => !hasStudentTakenExam(studentId,exam.id) ? available.push(exam) : null)
+    return available
+}
+
+
+function getAnswerReview(resultId){
+    const result = getResultById(resultId);
+    const questions = getQuestionsByExam(result.examId);
+
+    return questions.map( question => {
+        const studentAnswer = result.answers.find(a => a.questionId == question.id)?.studentAnswer;
+        return{
+        ...question , 
+        "studentAnswer": studentAnswer,
+        'isCorrect': studentAnswer === question.correctAnswer,}
+    })
 }
 
 
