@@ -1,0 +1,284 @@
+.hero{
+    padding:80px 0;
+    background-color: var(--color-background-muted);
+}
+
+.hero-text h1{
+    font-size:4rem;
+    margin-bottom:30px;
+}
+
+.hero-text h1 span{
+    color:var(--color-primary-dark);
+}
+
+.hero-text p{
+    margin-bottom:35px;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.teacher-btn,
+.student-btn{
+    padding:18px 42px;
+    border-radius:50px;
+    color:#fff;
+    font-weight:600;
+}
+
+.teacher-btn{
+    background:var(--color-primary);
+}
+
+.student-btn{
+    background:var(--color-secondary);
+}
+
+.hero-image img{
+    width:100%;
+    max-width:650px;
+    border-radius: var(--radius-md);
+}
+
+.circle-right{
+    position:absolute;
+    border-radius:50%;
+}
+
+
+.circle-right{
+    width:50px;
+    height:50px;
+    border:5px solid var(--color-border);
+}
+/* ================= FEATURES ================= */
+
+.features {
+    padding: 90px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title span {
+    width: 90px;
+    height: 4px;
+    background: var(--color-primary);
+    display: block;
+    margin: auto;
+}
+
+.feature-card {
+    background: var(--color-background);
+    padding: 35px 25px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    height: 100%;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    transition: .35s;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* الخطين العلوي والسفلي */
+
+.feature-card::before,
+.feature-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 5px;
+}
+
+.feature-card::before {
+    top: 0;
+}
+
+.feature-card::after {
+    bottom: 0;
+}
+
+/* لون الخط حسب الكارد */
+
+.green::before,
+.green::after {
+    background: var(--color-primary);
+}
+
+.purple::before,
+.purple::after {
+    background: var(--color-secondary);
+}
+
+.gray::before,
+.gray::after {
+    background: var(--color-text-secondary);
+}
+
+.light-blue::before,
+.light-blue::after {
+    background: var(--color-border);
+}
+
+/* الأيقونة */
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 25px;
+    font-size: 28px;
+}
+
+.green .feature-icon {
+    background: #DDF4DE;
+    color: var(--color-primary);
+}
+
+.purple .feature-icon {
+    background: var(--color-light);
+    color: var(--color-secondary);
+}
+
+.gray .feature-icon {
+    background: var(--color-background-alt);
+    color: var(--color-text-secondary);
+}
+
+.light-blue .feature-icon {
+    background: var(--color-background-muted);
+    color: var(--color-primary);
+}
+
+/* النص */
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    color: var(--color-text-primary);
+}
+
+.feature-card p {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    font-size: .95rem;
+}
+/* Statistics */
+
+.statistics{
+    padding:70px 0;
+
+}
+
+.stats-box{
+    background:var(--color-primary);
+    padding:50px;
+    border-radius:25px;
+    position:relative;
+}
+
+.stat i{
+    font-size:2rem;
+    color:white;
+    margin-bottom:15px;
+}
+
+.stat h2{
+    color:white;
+    font-size:3rem;
+}
+
+.stat p{
+    color:white;
+}
+
+.stats-star{
+    position:absolute;
+    top:20px;
+    right:30px;
+    font-size:100px;
+    opacity:.15;
+    color:white;
+}
+/* ================= Reviews ================= */
+
+.student-reviews {
+background-color: var(--color-background-muted);
+    padding: 90px 0;
+}
+
+.student-review-card {
+    background: var(--color-background);
+    border-radius: var(--radius-lg);
+    padding: 35px 30px;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    box-shadow: var(--shadow-lg);
+    transition: .3s;
+}
+
+.student-review-card:hover {
+    transform: translateY(-8px);
+}
+
+.student-review-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: -70px auto 20px;
+    border: 5px solid var(--color-background);
+}
+
+.quote {
+    font-size: 35px;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 15px;
+}
+
+.quote.green {
+    color: var(--color-primary);
+}
+
+.quote.purple {
+    color: var(--color-secondary);
+}
+
+.student-review-card p {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: 30px;
+    min-height: 110px;
+}
+
+.student-review-card h3 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.student-review-card span {
+    color: var(--color-secondary);
+    font-weight: var(--font-weight-md);
+}
+a{
+    text-decoration: none;
+}
