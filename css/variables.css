@@ -6,6 +6,7 @@
   --color-secondary-light: #F2E7FC;  
   --color-secondary-dark: #773395;
   --color-secondary-badge: #FEF7FF;
+  --color-secondary-title: #661A86;
   --color-light: #F2E7FC;
 
   /* ===== Text Colors ===== */
@@ -25,6 +26,7 @@
 
   /* ===== Status Colors (grade/pass-fail pills) ===== */
   --color-success: #4CB050;
+  --color-success-text: #1D3E21;
   --color-success-bg: #EAFEE9; 
   --color-danger: #BA1A1A;         
   --color-danger-bg: #F9E9E9;     
