@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+@import url("./variables.css");
+@import url("./base.css");
+@import url("./components.css");
+@import url("./layout.css");
+=======
 /* Import order matters — tokens first, then resets, then structure, then reusable pieces, then page-specific overrides */
 
 @import url("variables.css");
@@ -12,3 +18,4 @@
 @import url("pages/dashboard.css");
 @import url("pages/exam.css");
 @import url("pages/results.css");
+>>>>>>> upstream/main
