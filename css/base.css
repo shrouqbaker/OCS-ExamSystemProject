@@ -62,3 +62,18 @@ p {
     padding: var(--spacing-md) var(--spacing-lg);
     border-radius: var(--radius-full);
 }
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+img{
+    max-width:100%;
+    display:block;
+}
+
+html{
+    scroll-behavior:smooth;
+}
