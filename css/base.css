@@ -46,3 +46,19 @@ p {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
+
+/* ===== Input ===== */
+.inp {
+  background-color: var(--color-background-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+   
+/* ===== button ===== */
+
+.btn{
+    width: 225px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-full);
+}
