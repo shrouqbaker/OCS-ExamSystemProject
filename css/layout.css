@@ -160,6 +160,7 @@
   .dashboard-content {
     padding: var(--spacing-md);
   }
+}
 /* Navbar */
 header {
     background: var(--color-background-input);
