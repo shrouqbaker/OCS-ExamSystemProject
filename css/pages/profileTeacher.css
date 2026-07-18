@@ -1,0 +1,277 @@
+/* ===========================
+   Profile Header
+=========================== */
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:var(--spacing-xl);
+
+    margin-bottom:var(--spacing-2xl);
+}
+
+.profile-avatar{
+
+    width:90px;
+    height:90px;
+
+    border-radius:var(--radius-full);
+
+    background:var(--color-background-alt);
+
+    border:3px solid var(--color-secondary-light);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:2.2rem;
+    font-weight:var(--font-weight-bold);
+
+    color:var(--color-text-primary);
+
+    flex-shrink:0;
+}
+
+.profile-header h1{
+
+    margin-bottom:var(--spacing-sm);
+
+    font-family:var(--font-heading);
+
+    font-size:2.3rem;
+
+    font-weight:var(--font-weight-bold);
+
+    color:var(--color-text-primary);
+}
+
+
+/* ===========================
+   Main Card
+=========================== */
+
+.dashboard-section{
+
+    background:var(--color-background);
+
+    border:1px solid var(--color-border);
+
+    border-radius:var(--radius-lg);
+
+    padding:var(--spacing-xl);
+
+    box-shadow:var(--shadow-sm);
+}
+
+
+/* ===========================
+   Section Header
+=========================== */
+
+.section-header{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-bottom:var(--spacing-xl);
+
+}
+
+.section-header h2{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:0;
+
+    font-size:var(--font-size-xl);
+
+    font-family:var(--font-heading);
+
+    font-weight:var(--font-weight-bold);
+
+    color:var(--color-text-primary);
+}
+
+.section-header h2 i{
+
+    color:var(--color-secondary);
+
+}
+
+
+/* ===========================
+   Profile Cards
+=========================== */
+
+.profile-card{
+
+    position:relative;
+
+    background:var(--color-background-alt);
+
+    border-radius:var(--radius-lg);
+
+    padding:var(--spacing-xl);
+
+    height:100%;
+
+    transition:.35s;
+
+    overflow:hidden;
+
+}
+
+.profile-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.profile-card--green{
+
+    border-left:4px solid var(--color-primary-dark);
+
+}
+
+.profile-card--purple{
+
+    border-left:4px solid var(--color-secondary);
+
+}
+
+.profile-card small{
+
+    display:block;
+
+    margin-bottom:var(--spacing-md);
+
+    color:var(--color-text-secondary);
+
+    font-size:var(--font-size-sm);
+
+}
+
+.profile-info{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.profile-info i{
+
+    font-size:1.3rem;
+
+}
+
+.profile-card--green i{
+
+    color:var(--color-primary-dark);
+
+}
+
+.profile-card--purple i{
+
+    color:var(--color-secondary);
+
+}
+
+.profile-info span{
+
+    font-size:1.05rem;
+
+    font-weight:var(--font-weight-md);
+
+}
+
+
+/* ===========================
+   About
+=========================== */
+
+.about-box{
+
+    margin-top:var(--spacing-xl);
+
+    background:var(--color-background-alt);
+
+    border-radius:var(--radius-lg);
+
+    padding:var(--spacing-xl);
+
+}
+
+.about-box small{
+
+    display:block;
+
+    margin-bottom:var(--spacing-md);
+
+    color:var(--color-text-secondary);
+
+    font-size:var(--font-size-sm);
+
+}
+
+.about-box p{
+
+    margin:0;
+
+    background:var(--color-background);
+
+    border:1px solid var(--color-border);
+
+    border-radius:var(--radius-lg);
+
+    padding:var(--spacing-lg);
+
+    line-height:1.8;
+
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:992px){
+
+.profile-header{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.profile-header h1{
+
+font-size:2rem;
+
+}
+
+.profile-avatar{
+
+width:80px;
+height:80px;
+
+font-size:2rem;
+
+}
+
+}
