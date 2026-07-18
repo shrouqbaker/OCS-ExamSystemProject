@@ -25,10 +25,10 @@ function clearCurrent(key) {
 
     //Relations and Joins
 
-function oneToMany (parents,children,fk,resultKey){
+function oneToMany (parents,children,pk,fk,resultKey){
     return parents.map(parent =>({
         ... parent,
-        [resultKey]: children.filter(child => child[fk] === parent.id) 
+        [resultKey]: children.filter(child => child[fk] === parent[pk]) 
     }))
 }
 
@@ -220,42 +220,48 @@ function addResult(studentId, examId, answers, score, grade, passed, feedback) {
 
 
 //Backend
-function seedDatabase(){
 
-    if (getUsers().length > 0) return;
+function seedDatabase() {
+
+    if (getExams().some(function (e) { return e.title === "Fun with Science"; })) {
+        console.log("Graded exams test data already exists - skipping to avoid duplicates.");
+        return;
+    }
 
     const teacher = addUser(
         "teacher",
-        "Dr. Ahmad",
-        "Male",
-        "2000312489",
-        "0791231231",
-        "dr.ahmad",
+        "Dr. Layla Mansour",
+        "Female",
+        "2000998877",
+        "0791112222",
+        "dr.layla",
         "password123",
         "Teaching Science",
-        10
+        8
     );
 
-    /* Students - 20 total, generated in a loop */
-    const students = [];
-    for (let i = 1; i <= 20; i++) {
-        students.push(addStudent(
-            `Student ${i}`,
-            i % 2 === 0 ? "Female" : "Male",
-            `20${String(i).padStart(2, '0')}0000001`,
-            `07900000${String(i).padStart(2, '0')}`,
-            `student${i}`,
-            "123456"
-        ));
-    }
+    const amir = addStudent("Amir Khalil", "Male", "2001111111", "0791111111", "amir.khalil", "pass123");
+    const lina = addStudent("Lina Farouk", "Female", "2002222222", "0792222222", "lina.farouk", "pass123");
+    const omar = addStudent("Omar Nasser", "Male", "2003333333", "0793333333", "omar.nasser", "pass123");
 
-    /* Exam - just 1 */
-    const exam = addExam(
-        "Molecular Biology Quiz",
-        "Biology",
-        "2026-10-24T09:00",
-        60,
-        20,
+    /* Exam A - "finished": all 3 students have already submitted */
+    const examA = addExam(
+        "The Amazing World of Science",
+        "Science",
+        "2026-07-10T09:00",
+        30,
+        8,
+        "inactive",
+        teacher.id
+    );
+
+    /* Exam B - "still available": active, nobody has taken it yet */
+    const examB = addExam(
+        "Fun with Science",
+        "Science",
+        "2026-07-25T09:00",
+        30,
+        8,
         "active",
         teacher.id
     );
@@ -269,61 +275,71 @@ function seedDatabase(){
         });
     }
 
-    const questions = [];
+    function addFullQuestionSet(examId, data) {
+        const questions = [];
 
-    /* 5 Multiple Choice */
-    const mcqData = [
-        { text: "What is the basic unit of life?", options: ["Atom", "Cell", "Molecule", "Tissue"], correct: 1 },
-        { text: "Which organelle is known as the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], correct: 2 },
-        { text: "DNA stands for:", options: ["Deoxyribonucleic acid", "Dioxyribose nucleic acid", "Deoxyribose nuclear acid", "Dual nucleic acid"], correct: 0 },
-        { text: "What are the building blocks of proteins?", options: ["Nucleotides", "Amino acids", "Fatty acids", "Monosaccharides"], correct: 1 },
-        { text: "What is the primary energy currency of the cell?", options: ["Glucose", "ATP", "NADH", "Protein"], correct: 1 }
-    ];
-    mcqData.forEach(function (q, i) {
-        const opts = buildOptions(q.options);
-        const correctKey = "o" + (q.correct + 1);
-        questions.push(addQuestion(exam.id, "mcq", q.text, opts, correctKey, 5, i + 1));
+        data.mcq.forEach(function (q, i) {
+            const opts = buildOptions(q.options);
+            const correctKey = "o" + (q.correct + 1);
+            questions.push(addQuestion(examId, "mcq", q.text, opts, correctKey, 10, i + 1));
+        });
+
+        data.trueFalse.forEach(function (q, i) {
+            questions.push(addQuestion(examId, "trueFalse", q.text, [], q.correct, 10, i + 3));
+        });
+
+        data.multiAnswer.forEach(function (q, i) {
+            const opts = buildOptions(q.options);
+            const correctKeys = q.correctIndexes.map(function (idx) { return "o" + (idx + 1); });
+            questions.push(addQuestion(examId, "multiAnswer", q.text, opts, correctKeys, 10, i + 5));
+        });
+
+        data.shortAnswer.forEach(function (q, i) {
+            questions.push(addQuestion(examId, "shortAnswer", q.text, [], q.correct, 10, i + 7));
+        });
+
+        return questions;
+    }
+
+    const examAQuestions = addFullQuestionSet(examA.id, {
+        mcq: [
+            { text: "What do plants need to grow?", options: ["Sunlight and water", "Only darkness", "Ice only", "Nothing at all"], correct: 0 },
+            { text: "Which planet do we live on?", options: ["Mars", "Earth", "Jupiter", "Venus"], correct: 1 }
+        ],
+        trueFalse: [
+            { text: "The Sun is a star.", correct: true },
+            { text: "Fish can breathe air the same way humans do.", correct: false }
+        ],
+        multiAnswer: [
+            { text: "Which of these are living things? (Select all that apply)", options: ["Dog", "Rock", "Tree", "Chair"], correctIndexes: [0, 2] },
+            { text: "Which of these are weather conditions? (Select all that apply)", options: ["Rain", "Snow", "Homework", "Sunshine"], correctIndexes: [0, 1, 3] }
+        ],
+        shortAnswer: [
+            { text: "How many legs does a spider have?", correct: 8 },
+            { text: "How many days are there in one week?", correct: 7 }
+        ]
     });
 
-    /* 5 True/False */
-    const tfData = [
-        { text: "The mitochondria is the powerhouse of the cell.", correct: true },
-        { text: "DNA replication occurs during the S phase of the cell cycle.", correct: true },
-        { text: "Ribosomes are only found in eukaryotic cells.", correct: false },
-        { text: "RNA contains uracil instead of thymine.", correct: true },
-        { text: "Animal cells have a cell wall.", correct: false }
-    ];
-    tfData.forEach(function (q, i) {
-        questions.push(addQuestion(exam.id, "trueFalse", q.text, [], q.correct, 5, i + 6));
+    addFullQuestionSet(examB.id, {
+        mcq: [
+            { text: "What do we call frozen water?", options: ["Steam", "Ice", "Juice", "Sand"], correct: 1 },
+            { text: "Which sense do we use to hear sounds?", options: ["Sight", "Smell", "Hearing", "Taste"], correct: 2 }
+        ],
+        trueFalse: [
+            { text: "The Earth orbits around the Sun.", correct: true },
+            { text: "All insects have exactly four legs.", correct: false }
+        ],
+        multiAnswer: [
+            { text: "Which of these are sources of light? (Select all that apply)", options: ["Sun", "Flashlight", "Rock", "Candle"], correctIndexes: [0, 1, 3] },
+            { text: "Which of these are parts of a plant? (Select all that apply)", options: ["Roots", "Leaves", "Wheels", "Stem"], correctIndexes: [0, 1, 3] }
+        ],
+        shortAnswer: [
+            { text: "How many colors are in a rainbow?", correct: 7 },
+            { text: "How many seasons are there in a year?", correct: 4 }
+        ]
     });
 
-    /* 5 Multiple Answers (select all that apply) */
-    const maData = [
-        { text: "Which of the following are nitrogenous bases found in DNA? (Select all that apply)", options: ["Adenine", "Uracil", "Thymine", "Guanine"], correctIndexes: [0, 2, 3] },
-        { text: "Which of the following are organelles found in a eukaryotic cell? (Select all that apply)", options: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correctIndexes: [0, 1, 2] },
-        { text: "Which of these processes occur during protein synthesis? (Select all that apply)", options: ["Transcription", "Translation", "Replication", "Splicing"], correctIndexes: [0, 1, 3] },
-        { text: "Which of these are types of RNA? (Select all that apply)", options: ["mRNA", "tRNA", "rRNA", "gDNA"], correctIndexes: [0, 1, 2] },
-        { text: "Which of these are functions of the cell membrane? (Select all that apply)", options: ["Selective permeability", "Protein synthesis", "Cell communication", "DNA replication"], correctIndexes: [0, 2] }
-    ];
-    maData.forEach(function (q, i) {
-        const opts = buildOptions(q.options);
-        const correctKeys = q.correctIndexes.map(function (idx) { return "o" + (idx + 1); });
-        questions.push(addQuestion(exam.id, "multiAnswer", q.text, opts, correctKeys, 5, i + 11));
-    });
-
-    /* 5 Short Answer (numeric only) */
-    const saData = [
-        { text: "How many chromosomes are in a normal human somatic cell?", correct: 46 },
-        { text: "How many chambers does the human heart have?", correct: 4 },
-        { text: "How many nucleotide bases make up a single DNA codon?", correct: 3 },
-        { text: "How many strands make up a DNA double helix?", correct: 2 },
-        { text: "How many amino acids are commonly found in human proteins?", correct: 20 }
-    ];
-    saData.forEach(function (q, i) {
-        questions.push(addQuestion(exam.id, "shortAnswer", q.text, [], q.correct, 5, i + 16));
-    });
-
-    // Builds a genuinely wrong answer in the right shape for each question type
+    // Produces a genuinely wrong answer in the right shape for each type
     function wrongAnswerFor(question) {
         if (question.type === "mcq") {
             const correctIndex = Number(question.correctAnswer.slice(1)) - 1;
@@ -334,7 +350,6 @@ function seedDatabase(){
             return !question.correctAnswer;
         }
         if (question.type === "multiAnswer") {
-            // drop one correct option and add one wrong one - a believable near-miss
             const correct = question.correctAnswer;
             const allKeys = question.options.map(function (o) { return Object.keys(o)[0]; });
             const wrongKey = allKeys.find(function (k) { return !correct.includes(k); });
@@ -345,34 +360,40 @@ function seedDatabase(){
         return question.correctAnswer + 1;
     }
 
-    /* Results - only the first 10 students (half) have submitted, with a
-       genuinely varied number of wrong answers per student so scores spread
-       across a believable range, not one uniform formula. */
-    const wrongCountPerStudent = [0, 1, 2, 3, 4, 5, 7, 9, 11, 14];
-
-    for (let i = 0; i < 10; i++) {
-        const wrongCount = wrongCountPerStudent[i];
-
-        const wrongIndexes = new Set();
-        for (let w = 0; w < wrongCount; w++) {
-            wrongIndexes.add((w * 3 + i) % questions.length);
-        }
+    // Builds a result with a real, computed score/grade based on which
+    // question indexes (0-7) should be answered wrong.
+    function buildResult(studentId, examId, questions, wrongIndexSet) {
+        let earnedPoints = 0;
+        let totalPoints = 0;
 
         const answers = questions.map(function (q, idx) {
-            if (wrongIndexes.has(idx)) {
+            const points = Number(q.points) || 0;
+            totalPoints += points;
+
+            if (wrongIndexSet.has(idx)) {
                 return { questionId: q.id, studentAnswer: wrongAnswerFor(q) };
             }
+            earnedPoints += points;
             return { questionId: q.id, studentAnswer: q.correctAnswer };
         });
 
-        const correctCount = questions.length - wrongIndexes.size;
-        const score = Math.round((correctCount / questions.length) * 100);
+        const score = Math.round((earnedPoints / totalPoints) * 100);
         const grade = gradeCalc(score);
 
-        addResult(students[i].id, exam.id, answers, score, grade, score >= 50, "");
+        return addResult(studentId, examId, answers, score, grade, score >= 50, "");
     }
-}
 
+    // Amir - all 8 correct -> should land as an A
+    buildResult(amir.id, examA.id, examAQuestions, new Set());
+
+    // Lina - 1 wrong out of 8 (7/8 = 87.5% -> 88%) -> should land as a B
+    buildResult(lina.id, examA.id, examAQuestions, new Set([4]));
+
+    // Omar - 5 wrong out of 8 (3/8 = 37.5% -> 38%) -> should land as an F
+    buildResult(omar.id, examA.id, examAQuestions, new Set([0, 1, 2, 5, 6]));
+
+    // Exam B intentionally gets ZERO results - it's the "still available" one
+}
 seedDatabase()
 
     //AUTHENTICATION
@@ -614,402 +635,3 @@ function gradeCalc(score) {
 
   return "F";
 }
-function seedAvailableExamsTestData() {
-  let teacher = getUserByUsername("dr.ahmad");
-
-  if (!teacher) {
-    teacher = addUser(
-      "teacher",
-      "Dr. Ahmad",
-      "Male",
-      "2000312489",
-      "0791231231",
-      "dr.ahmad",
-      "password123",
-      "Teaching Science",
-      10
-    );
-  }
-
-  let student = getUserByUsername("rama.student");
-
-  if (!student) {
-    student = addStudent(
-      "Rama Student",
-      "Female",
-      "2004123456",
-      "0790000000",
-      "rama.student",
-      "password123"
-    );
-  }
-
-  const testExams = [
-    {
-      title: "The Solar System",
-      subject: "Science",
-      dateTime: "2026-07-20T10:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Human Body Basics",
-      subject: "Science",
-      dateTime: "2026-07-21T11:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Matter and Materials",
-      subject: "Science",
-      dateTime: "2026-07-22T12:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Plants and Photosynthesis",
-      subject: "Science",
-      dateTime: "2026-07-23T09:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    }
-  ];
-
-  const testQuestions = [
-    /* =====================================
-       The Solar System
-    ===================================== */
-
-    {
-      examTitle: "The Solar System",
-      type: "mcq",
-      text: "Which planet is closest to the Sun?",
-      options: [
-        { o1: "Earth" },
-        { o2: "Mercury" },
-        { o3: "Mars" },
-        { o4: "Jupiter" }
-      ],
-      correctAnswer: "o2",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "The Solar System",
-      type: "trueFalse",
-      text: "The Sun is a star.",
-      options: [],
-      correctAnswer: true,
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "The Solar System",
-      type: "multiAnswer",
-      text: "Choose all the rocky planets.",
-      options: [
-        { o1: "Mercury" },
-        { o2: "Earth" },
-        { o3: "Jupiter" },
-        { o4: "Mars" }
-      ],
-      correctAnswer: ["o1", "o2", "o4"],
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "The Solar System",
-      type: "numerical",
-      text: "How many planets are in the Solar System?",
-      options: [],
-      correctAnswer: 8,
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "The Solar System",
-      type: "mcq",
-      text: "Which planet is famous for its rings?",
-      options: [
-        { o1: "Mercury" },
-        { o2: "Earth" },
-        { o3: "Saturn" },
-        { o4: "Mars" }
-      ],
-      correctAnswer: "o3",
-      points: 10,
-      order: 5
-    },
-
-    /* =====================================
-       Human Body Basics
-    ===================================== */
-
-    {
-      examTitle: "Human Body Basics",
-      type: "mcq",
-      text: "Which organ pumps blood around the body?",
-      options: [
-        { o1: "Brain" },
-        { o2: "Heart" },
-        { o3: "Lungs" },
-        { o4: "Stomach" }
-      ],
-      correctAnswer: "o2",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "trueFalse",
-      text: "Humans normally have two lungs.",
-      options: [],
-      correctAnswer: true,
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "multiAnswer",
-      text: "Choose the parts involved in breathing.",
-      options: [
-        { o1: "Lungs" },
-        { o2: "Trachea" },
-        { o3: "Stomach" },
-        { o4: "Kidneys" }
-      ],
-      correctAnswer: ["o1", "o2"],
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "numerical",
-      text: "How many chambers does the human heart have?",
-      options: [],
-      correctAnswer: 4,
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "mcq",
-      text: "Which part of the body protects the brain?",
-      options: [
-        { o1: "Ribs" },
-        { o2: "Skull" },
-        { o3: "Spine" },
-        { o4: "Muscles" }
-      ],
-      correctAnswer: "o2",
-      points: 10,
-      order: 5
-    },
-
-    /* =====================================
-       Matter and Materials
-    ===================================== */
-
-    {
-      examTitle: "Matter and Materials",
-      type: "mcq",
-      text: "Which of the following is a state of matter?",
-      options: [
-        { o1: "Solid" },
-        { o2: "Light" },
-        { o3: "Sound" },
-        { o4: "Heat" }
-      ],
-      correctAnswer: "o1",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "trueFalse",
-      text: "Water can exist as a solid.",
-      options: [],
-      correctAnswer: true,
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "multiAnswer",
-      text: "Choose the three common states of matter.",
-      options: [
-        { o1: "Solid" },
-        { o2: "Liquid" },
-        { o3: "Gas" },
-        { o4: "Light" }
-      ],
-      correctAnswer: ["o1", "o2", "o3"],
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "numerical",
-      text: "How many common states of matter are there?",
-      options: [],
-      correctAnswer: 3,
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "mcq",
-      text: "Steam is an example of which state of matter?",
-      options: [
-        { o1: "Solid" },
-        { o2: "Liquid" },
-        { o3: "Gas" },
-        { o4: "Metal" }
-      ],
-      correctAnswer: "o3",
-      points: 10,
-      order: 5
-    },
-
-    /* =====================================
-       Plants and Photosynthesis
-    ===================================== */
-
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "mcq",
-      text: "Which part of a plant absorbs water from the soil?",
-      options: [
-        { o1: "Flower" },
-        { o2: "Roots" },
-        { o3: "Fruit" },
-        { o4: "Leaves" }
-      ],
-      correctAnswer: "o2",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "trueFalse",
-      text: "Plants need sunlight to make food.",
-      options: [],
-      correctAnswer: true,
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "multiAnswer",
-      text: "Choose what plants need for photosynthesis.",
-      options: [
-        { o1: "Sunlight" },
-        { o2: "Water" },
-        { o3: "Carbon dioxide" },
-        { o4: "Plastic" }
-      ],
-      correctAnswer: ["o1", "o2", "o3"],
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "shortAnswer",
-      text: "Which gas do plants absorb from the air?",
-      options: [],
-      correctAnswer: "Carbon dioxide",
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "mcq",
-      text: "Which pigment gives leaves their green color?",
-      options: [
-        { o1: "Chlorophyll" },
-        { o2: "Oxygen" },
-        { o3: "Protein" },
-        { o4: "Calcium" }
-      ],
-      correctAnswer: "o1",
-      points: 10,
-      order: 5
-    }
-  ];
-
-  const exams = getExams();
-  const questions = getQuestions();
-
-  testExams.forEach(function (examData) {
-    let exam = exams.find(function (storedExam) {
-      return storedExam.title === examData.title;
-    });
-
-    if (!exam) {
-      exam = {
-        ...examTemplate(),
-        id: generateId("e"),
-        createdAt: new Date().toISOString(),
-        title: examData.title,
-        subject: examData.subject,
-        dateTime: examData.dateTime,
-        duration: examData.duration,
-        numQuestions: examData.numQuestions,
-        status: examData.status,
-        createdBy: teacher.id
-      };
-
-      exams.push(exam);
-    } else {
-      exam.subject = examData.subject;
-      exam.dateTime = examData.dateTime;
-      exam.duration = examData.duration;
-      exam.numQuestions = examData.numQuestions;
-      exam.status = examData.status;
-      exam.createdBy = teacher.id;
-    }
-  });
-
-  testQuestions.forEach(function (questionData) {
-    const exam = exams.find(function (storedExam) {
-      return storedExam.title === questionData.examTitle;
-    });
-
-    if (!exam) {
-      return;
-    }
-
-    let question = questions.find(function (storedQuestion) {
-      return (
-        storedQuestion.examId === exam.id &&
-        storedQuestion.text === questionData.text
-      );
-    });
-
-    if (!question) {
-      question = {
-        ...questionTemplate(),
-        id: generateId("q"),
-        examId: exam.id
-      };
-
-      questions.push(question);
-    }
-
-    question.type = questionData.type;
-    question.text = questionData.text;
-    question.options = questionData.options;
-    question.correctAnswer = questionData.correctAnswer;
-    question.points = questionData.points;
-    question.order = questionData.order;
-  });
-
-  setTable("exams", exams);
-  setTable("questions", questions);
-}
-
-seedAvailableExamsTestData();

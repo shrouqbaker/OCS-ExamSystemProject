@@ -27,7 +27,7 @@ const scienceFacts = [
     {
         category: "Plants",
         title: "Natural Food Makers",
-        text: "Plants use sunlight to make their own food through photosynthesis."
+        text: "Plants use sunlight to make food through photosynthesis."
     },
     {
         category: "Animals",
@@ -47,137 +47,180 @@ const scienceFacts = [
     {
         category: "Human Body",
         title: "A Powerful Brain",
-        text: "Your brain controls your movement, memory, senses, and emotions."
+        text: "Your brain controls movement, memory, senses, and emotions."
     }
 ];
 
-document.addEventListener("DOMContentLoaded", () => {
-
+document.addEventListener("DOMContentLoaded", function () {
     requireRole("student");
 
     const current = getCurrent("currentUser");
 
-    if (!current) {
+    if (!current || current.role !== "student") {
         return;
     }
 
     const student = getUserById(current.id);
 
     if (!student) {
+        window.location.href = "../login.html";
         return;
     }
 
     // ================= Welcome =================
 
-    document.getElementById("studentName").textContent =
-        student.fullName;
+    const studentName =
+        document.getElementById("studentName");
+
+    if (studentName) {
+        studentName.textContent = student.fullName;
+    }
 
     // ================= Data =================
 
-    const results = getResultsByStudent(student.id);
+    const results =
+        getResultsByStudent(student.id);
 
     const availableExams =
         getAvailableExamsForStudent(student.id);
 
     // ================= Statistics =================
 
-    document.getElementById("completedExams").textContent =
-        results.length;
+    const completedExamsElement =
+        document.getElementById("completedExams");
 
-    document.getElementById("availableExams").textContent =
-        availableExams.length;
+    const availableExamsElement =
+        document.getElementById("availableExams");
+
+    const averageScoreElement =
+        document.getElementById("averageScore");
+
+    if (completedExamsElement) {
+        completedExamsElement.textContent = results.length;
+    }
+
+    if (availableExamsElement) {
+        availableExamsElement.textContent =
+            availableExams.length;
+    }
 
     let average = 0;
 
     if (results.length > 0) {
-        const total = results.reduce((sum, result) => {
-            return sum + result.score;
+        const total = results.reduce(function (sum, result) {
+            return sum + Number(result.score || 0);
         }, 0);
 
         average = Math.round(total / results.length);
     }
 
-    document.getElementById("averageScore").textContent =
-        average + "%";
+    if (averageScoreElement) {
+        averageScoreElement.textContent =
+            average + "%";
+    }
 
     // ================= Available Exams =================
 
     const examContainer =
         document.getElementById("availableExamList");
 
-    if (availableExams.length === 0) {
+    if (examContainer) {
+        examContainer.innerHTML = "";
 
-        examContainer.innerHTML = `
-            <div class="col-12">
-
-                <div class="alert alert-success">
-                    No available exams.
+        if (availableExams.length === 0) {
+            examContainer.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-success">
+                        No available exams.
+                    </div>
                 </div>
+            `;
+        } else {
+            availableExams
+                .slice(0, 3)
+                .forEach(function (exam) {
+                    const teacher =
+                        getUserById(exam.createdBy);
 
-            </div>
-        `;
+                    const teacherName = teacher
+                        ? teacher.fullName
+                        : "Science Teacher";
 
-    } else {
+                    examContainer.innerHTML += `
+                        <div class="col-lg-4 col-md-6">
 
-        availableExams
-            .slice(0, 3)
-            .forEach(exam => {
+                            <article class="exam-card">
 
-                examContainer.innerHTML += `
-                    <div class="col-lg-4 col-md-6">
+                                <div class="exam-card__image-wrapper">
 
-                        <div class="exam-card">
+                                    <img
+                                        src="../images/science.jpg"
+                                        alt="${exam.title}"
+                                        class="exam-card__image"
+                                    >
 
-                            <img
-                                src="../assets/images/dash-exam.png"
-                                class="exam-image"
-                                alt="${exam.title}"
-                            >
-
-                            <div class="exam-body">
-
-                                <h5 class="exam-title">
-                                    ${exam.title}
-                                </h5>
-
-                                <div class="exam-info">
-
-                                    <span>
-                                        <i class="bi bi-calendar-event"></i>
-                                        ${exam.dateTime}
-                                    </span>
-
-                                </div>
-
-                                <div class="exam-info">
-
-                                    <span>
+                                    <span class="exam-card__time">
                                         <i class="bi bi-clock"></i>
-                                        ${exam.duration} Minutes
-                                    </span>
-
-                                    <span>
-                                        <i class="bi bi-question-circle"></i>
-                                        ${exam.numQuestions} Questions
+                                        ${exam.duration} mins
                                     </span>
 
                                 </div>
 
-                                <a href="take-exam.html?id=${exam.id}">
+                                <div class="exam-card__body">
 
-                                    <button class="start-btn">
+                                    <div class="exam-card__meta">
+                                        <span>
+                                            <i class="bi bi-ui-checks"></i>
+                                            ${exam.numQuestions} Questions
+                                        </span>
+                                    </div>
+
+                                    <h2 class="exam-card__title">
+                                        ${exam.title}
+                                    </h2>
+
+                                    <div class="exam-card__teacher">
+                                        <i class="bi bi-calendar-event"></i>
+                                        <span>${exam.dateTime}</span>
+                                    </div>
+
+                                    <div class="exam-card__teacher">
+                                        <i class="bi bi-person-circle"></i>
+                                        <span>${teacherName}</span>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        class="exam-card__button"
+                                        data-exam-id="${exam.id}"
+                                    >
                                         Start Exam
                                     </button>
 
-                                </a>
+                                </div>
 
-                            </div>
+                            </article>
 
                         </div>
+                    `;
+                });
 
-                    </div>
-                `;
+            const startButtons =
+                document.querySelectorAll(
+                    ".exam-card__button"
+                );
+
+            startButtons.forEach(function (button) {
+                button.addEventListener(
+                    "click",
+                    function () {
+                        startExam(
+                            this.dataset.examId
+                        );
+                    }
+                );
             });
+        }
     }
 
     // ================= Recent Results =================
@@ -185,84 +228,100 @@ document.addEventListener("DOMContentLoaded", () => {
     const table =
         document.getElementById("resultsTableBody");
 
-    if (results.length === 0) {
+    if (table) {
+        table.innerHTML = "";
 
-        table.innerHTML = `
-            <tr>
+        if (results.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center">
+                        No completed exams yet.
+                    </td>
+                </tr>
+            `;
+        } else {
+            results
+                .slice()
+                .sort(function (firstResult, secondResult) {
+                    return (
+                        new Date(secondResult.submittedAt) -
+                        new Date(firstResult.submittedAt)
+                    );
+                })
+                .slice(0, 5)
+                .forEach(function (result) {
+                    const exam =
+                        getExamById(result.examId);
 
-                <td colspan="5" class="text-center">
-                    No completed exams yet.
-                </td>
+                    if (!exam) {
+                        return;
+                    }
 
-            </tr>
-        `;
+                    table.innerHTML += `
+                        <tr>
 
-    } else {
+                            <td>
+                                ${exam.title}
+                            </td>
 
-        results
-            .sort((a, b) => {
-                return (
-                    new Date(b.submittedAt) -
-                    new Date(a.submittedAt)
+                            <td class="score">
+                                ${result.score}%
+                            </td>
+
+                            <td>
+                                ${result.grade}
+                            </td>
+
+                            <td>
+                                <span
+                                    class="status ${
+                                        result.passed
+                                            ? "pass"
+                                            : "fail"
+                                    }"
+                                >
+                                    ${
+                                        result.passed
+                                            ? "Passed"
+                                            : "Failed"
+                                    }
+                                </span>
+                            </td>
+
+                            <td>
+                                <button
+                                    type="button"
+                                    class="review-btn"
+                                    data-result-id="${result.id}"
+                                >
+                                    Review
+                                </button>
+                            </td>
+
+                        </tr>
+                    `;
+                });
+
+            const reviewButtons =
+                document.querySelectorAll(".review-btn");
+
+            reviewButtons.forEach(function (button) {
+                button.addEventListener(
+                    "click",
+                    function () {
+                        const resultId =
+                            this.dataset.resultId;
+
+                        setCurrent("currentResult", {
+                            resultId: resultId
+                        });
+
+                        window.location.href =
+                            "review-exam.html";
+                    }
                 );
-            })
-            .slice(0, 5)
-            .forEach(result => {
-
-                const exam =
-                    getExamById(result.examId);
-
-                if (!exam) {
-                    return;
-                }
-
-                table.innerHTML += `
-                    <tr>
-
-                        <td>
-                            ${exam.title}
-                        </td>
-
-                        <td class="score">
-                            ${result.score}%
-                        </td>
-
-                        <td>
-                            ${result.grade}
-                        </td>
-
-                        <td>
-
-                            <span
-                                class="status ${
-                                    result.passed
-                                        ? "pass"
-                                        : "fail"
-                                }"
-                            >
-                                ${
-                                    result.passed
-                                        ? "Passed"
-                                        : "Failed"
-                                }
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            <a
-                                href="history.html"
-                                class="review-btn"
-                            >
-                                Review
-                            </a>
-
-                        </td>
-
-                    </tr>
-                `;
             });
+        }
     }
 
     // ================= Science Fact =================
@@ -270,7 +329,9 @@ document.addEventListener("DOMContentLoaded", () => {
     showRandomScienceFact();
 
     const factButton =
-        document.getElementById("newScienceFactButton");
+        document.getElementById(
+            "newScienceFactButton"
+        );
 
     if (factButton) {
         factButton.addEventListener(
@@ -278,26 +339,76 @@ document.addEventListener("DOMContentLoaded", () => {
             showRandomScienceFact
         );
     }
-
 });
 
-function showRandomScienceFact() {
+// ================= Start Exam =================
 
+function startExam(examId) {
+    const currentUser =
+        getCurrent("currentUser");
+
+    if (
+        !currentUser ||
+        currentUser.role !== "student"
+    ) {
+        window.location.href = "../login.html";
+        return;
+    }
+
+    const exam =
+        getExamById(examId);
+
+    if (!exam || exam.status !== "active") {
+        alert("This exam is not available.");
+        return;
+    }
+
+    if (
+        hasStudentTakenExam(
+            currentUser.id,
+            examId
+        )
+    ) {
+        alert("You have already taken this exam.");
+        return;
+    }
+
+    setCurrent("currentExam", {
+        examId: exam.id,
+        studentId: currentUser.id,
+        startedAt: new Date().toISOString(),
+        answers: []
+    });
+
+    window.location.href = "take-exam.html";
+}
+
+// ================= Science Fact =================
+
+function showRandomScienceFact() {
     const category =
-        document.getElementById("scienceFactCategory");
+        document.getElementById(
+            "scienceFactCategory"
+        );
 
     const title =
-        document.getElementById("scienceFactTitle");
+        document.getElementById(
+            "scienceFactTitle"
+        );
 
     const text =
-        document.getElementById("scienceFactText");
+        document.getElementById(
+            "scienceFactText"
+        );
 
     if (!category || !title || !text) {
         return;
     }
 
     const randomIndex =
-        Math.floor(Math.random() * scienceFacts.length);
+        Math.floor(
+            Math.random() * scienceFacts.length
+        );
 
     const fact =
         scienceFacts[randomIndex];
