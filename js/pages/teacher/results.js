@@ -14,7 +14,6 @@ const rawResults = getResults()
 const exams = getExams()
 const users = getUsers()
 
-// Context-aware data source: filter out other exams if examId is provided in URL
 const results = examId ? rawResults.filter(r => r.examId === examId) : rawResults;
 
 const PAGE_SIZE = 4

@@ -260,52 +260,99 @@ function seedDatabase(){
         teacher.id
     );
 
-    /* Questions - 20 real Molecular Biology questions */
-    const questionData = [
-        { text: "What is the basic unit of life?", options: ["Atom", "Cell", "Molecule", "Tissue"], correct: 1 },
-        { text: "Which organelle is known as the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], correct: 2 },
-        { text: "DNA stands for:", options: ["Deoxyribonucleic acid", "Dioxyribose nucleic acid", "Deoxyribose nuclear acid", "Dual nucleic acid"], correct: 0 },
-        { text: "Which base pairs with Adenine in DNA?", options: ["Cytosine", "Guanine", "Thymine", "Uracil"], correct: 2 },
-        { text: "Which base replaces Thymine in RNA?", options: ["Adenine", "Cytosine", "Guanine", "Uracil"], correct: 3 },
-        { text: "What is the process of copying DNA called?", options: ["Translation", "Transcription", "Replication", "Mutation"], correct: 2 },
-        { text: "What is the process of making protein from mRNA called?", options: ["Replication", "Translation", "Transcription", "Splicing"], correct: 1 },
-        { text: "Where does transcription occur in eukaryotic cells?", options: ["Cytoplasm", "Nucleus", "Mitochondria", "Ribosome"], correct: 1 },
-        { text: "What are the building blocks of proteins?", options: ["Nucleotides", "Amino acids", "Fatty acids", "Monosaccharides"], correct: 1 },
-        { text: "Which organelle synthesizes proteins?", options: ["Ribosome", "Lysosome", "Peroxisome", "Vacuole"], correct: 0 },
-        { text: "What type of bond holds amino acids together in a protein?", options: ["Hydrogen bond", "Ionic bond", "Peptide bond", "Glycosidic bond"], correct: 2 },
-        { text: "Which molecule carries genetic information from DNA to ribosomes?", options: ["tRNA", "mRNA", "rRNA", "DNA polymerase"], correct: 1 },
-        { text: "What is the function of the cell membrane?", options: ["Energy production", "Protein synthesis", "Selective permeability", "DNA storage"], correct: 2 },
-        { text: "Which organelle contains digestive enzymes?", options: ["Lysosome", "Peroxisome", "Nucleus", "Golgi apparatus"], correct: 0 },
-        { text: "What is the primary energy currency of the cell?", options: ["Glucose", "ATP", "NADH", "Protein"], correct: 1 },
-        { text: "In which phase of the cell cycle is DNA replicated?", options: ["G1", "S phase", "G2", "Mitosis"], correct: 1 },
-        { text: "What structure surrounds the genetic material in a eukaryotic cell?", options: ["Cell wall", "Nuclear envelope", "Plasma membrane", "Cytoskeleton"], correct: 1 },
-        { text: "Which type of RNA makes up ribosomes?", options: ["mRNA", "tRNA", "rRNA", "siRNA"], correct: 2 },
-        { text: "What is a mutation?", options: ["A change in protein structure", "A change in the DNA sequence", "A type of cell division", "A form of RNA"], correct: 1 },
-        { text: "Which enzyme unwinds the DNA double helix during replication?", options: ["DNA polymerase", "Helicase", "Ligase", "Primase"], correct: 1 }
-    ];
-
-    const questions = questionData.map(function (q, i) {
-        const options = q.options.map(function (text, idx) {
+    function buildOptions(texts) {
+        return texts.map(function (text, idx) {
             const key = "o" + (idx + 1);
             const obj = {};
             obj[key] = text;
             return obj;
         });
-        const correctKey = "o" + (q.correct + 1);
+    }
 
-        return addQuestion(exam.id, "mcq", q.text, options, correctKey, 5, i + 1);
+    const questions = [];
+
+    /* 5 Multiple Choice */
+    const mcqData = [
+        { text: "What is the basic unit of life?", options: ["Atom", "Cell", "Molecule", "Tissue"], correct: 1 },
+        { text: "Which organelle is known as the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], correct: 2 },
+        { text: "DNA stands for:", options: ["Deoxyribonucleic acid", "Dioxyribose nucleic acid", "Deoxyribose nuclear acid", "Dual nucleic acid"], correct: 0 },
+        { text: "What are the building blocks of proteins?", options: ["Nucleotides", "Amino acids", "Fatty acids", "Monosaccharides"], correct: 1 },
+        { text: "What is the primary energy currency of the cell?", options: ["Glucose", "ATP", "NADH", "Protein"], correct: 1 }
+    ];
+    mcqData.forEach(function (q, i) {
+        const opts = buildOptions(q.options);
+        const correctKey = "o" + (q.correct + 1);
+        questions.push(addQuestion(exam.id, "mcq", q.text, opts, correctKey, 5, i + 1));
     });
 
+    /* 5 True/False */
+    const tfData = [
+        { text: "The mitochondria is the powerhouse of the cell.", correct: true },
+        { text: "DNA replication occurs during the S phase of the cell cycle.", correct: true },
+        { text: "Ribosomes are only found in eukaryotic cells.", correct: false },
+        { text: "RNA contains uracil instead of thymine.", correct: true },
+        { text: "Animal cells have a cell wall.", correct: false }
+    ];
+    tfData.forEach(function (q, i) {
+        questions.push(addQuestion(exam.id, "trueFalse", q.text, [], q.correct, 5, i + 6));
+    });
+
+    /* 5 Multiple Answers (select all that apply) */
+    const maData = [
+        { text: "Which of the following are nitrogenous bases found in DNA? (Select all that apply)", options: ["Adenine", "Uracil", "Thymine", "Guanine"], correctIndexes: [0, 2, 3] },
+        { text: "Which of the following are organelles found in a eukaryotic cell? (Select all that apply)", options: ["Nucleus", "Mitochondria", "Ribosome", "Cell Wall"], correctIndexes: [0, 1, 2] },
+        { text: "Which of these processes occur during protein synthesis? (Select all that apply)", options: ["Transcription", "Translation", "Replication", "Splicing"], correctIndexes: [0, 1, 3] },
+        { text: "Which of these are types of RNA? (Select all that apply)", options: ["mRNA", "tRNA", "rRNA", "gDNA"], correctIndexes: [0, 1, 2] },
+        { text: "Which of these are functions of the cell membrane? (Select all that apply)", options: ["Selective permeability", "Protein synthesis", "Cell communication", "DNA replication"], correctIndexes: [0, 2] }
+    ];
+    maData.forEach(function (q, i) {
+        const opts = buildOptions(q.options);
+        const correctKeys = q.correctIndexes.map(function (idx) { return "o" + (idx + 1); });
+        questions.push(addQuestion(exam.id, "multiAnswer", q.text, opts, correctKeys, 5, i + 11));
+    });
+
+    /* 5 Short Answer (numeric only) */
+    const saData = [
+        { text: "How many chromosomes are in a normal human somatic cell?", correct: 46 },
+        { text: "How many chambers does the human heart have?", correct: 4 },
+        { text: "How many nucleotide bases make up a single DNA codon?", correct: 3 },
+        { text: "How many strands make up a DNA double helix?", correct: 2 },
+        { text: "How many amino acids are commonly found in human proteins?", correct: 20 }
+    ];
+    saData.forEach(function (q, i) {
+        questions.push(addQuestion(exam.id, "shortAnswer", q.text, [], q.correct, 5, i + 16));
+    });
+
+    // Builds a genuinely wrong answer in the right shape for each question type
+    function wrongAnswerFor(question) {
+        if (question.type === "mcq") {
+            const correctIndex = Number(question.correctAnswer.slice(1)) - 1;
+            const wrongIndex = (correctIndex + 1) % question.options.length;
+            return "o" + (wrongIndex + 1);
+        }
+        if (question.type === "trueFalse") {
+            return !question.correctAnswer;
+        }
+        if (question.type === "multiAnswer") {
+            // drop one correct option and add one wrong one - a believable near-miss
+            const correct = question.correctAnswer;
+            const allKeys = question.options.map(function (o) { return Object.keys(o)[0]; });
+            const wrongKey = allKeys.find(function (k) { return !correct.includes(k); });
+            const partial = correct.slice(0, -1);
+            return wrongKey ? partial.concat([wrongKey]) : partial;
+        }
+        // shortAnswer
+        return question.correctAnswer + 1;
+    }
+
     /* Results - only the first 10 students (half) have submitted, with a
-       genuinely varied number of wrong answers per student instead of one
-       uniform formula, so scores actually spread across a believable range. */
+       genuinely varied number of wrong answers per student so scores spread
+       across a believable range, not one uniform formula. */
     const wrongCountPerStudent = [0, 1, 2, 3, 4, 5, 7, 9, 11, 14];
 
     for (let i = 0; i < 10; i++) {
         const wrongCount = wrongCountPerStudent[i];
 
-        // Pick which specific questions this student gets wrong, spread
-        // across the exam rather than always the first N.
         const wrongIndexes = new Set();
         for (let w = 0; w < wrongCount; w++) {
             wrongIndexes.add((w * 3 + i) % questions.length);
@@ -313,10 +360,7 @@ function seedDatabase(){
 
         const answers = questions.map(function (q, idx) {
             if (wrongIndexes.has(idx)) {
-                // pick a real wrong option, never the correct one
-                const wrongOptionIndex = (questionData[idx].correct + 1) % 4;
-                const wrongKey = "o" + (wrongOptionIndex + 1);
-                return { questionId: q.id, studentAnswer: wrongKey };
+                return { questionId: q.id, studentAnswer: wrongAnswerFor(q) };
             }
             return { questionId: q.id, studentAnswer: q.correctAnswer };
         });
