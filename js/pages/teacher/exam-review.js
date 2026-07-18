@@ -9,8 +9,8 @@ const ansWithStudents = oneToMany(ans,users,"studentId","id","studentInfo")
 const ansWithExsmd = oneToMany(ansWithStudents,exams,"examId","id","examInfo")
 const result = oneToMany(ansWithExsmd,results,"resultId","id","resultInfo")
 const feedbackbtn = document.getElementById("saveFeedbackBtn")
-
 console.log(ans)
+console.log(result[0]);
 
 document.addEventListener("DOMContentLoaded", function () {
     requireRole('teacher')

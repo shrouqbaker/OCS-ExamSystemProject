@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     requireRole('teacher')
     getAvg()
     getCount()
-    getSubject()
+    // getSubject()
     getReviews()
     renderPage(currentPage)
 });
@@ -95,29 +95,29 @@ function getCount(){
     countd.innerHTML=`${Object.keys(obj).length}`
 }
 
-function getSubject(){
-    if (results.length === 0 || exams.length === 0) {
-        subject.innerHTML = "--"
-        return;
-    }
+// function getSubject(){
+//     if (results.length === 0 || exams.length === 0) {
+//         subject.innerHTML = "--"
+//         return;
+//     }
 
-    // Identify which subject is being reviewed based on current results scope
-    const obj = {}
-    results.forEach(res => {
-        const exam = exams.find(e => e.id === res.examId);
-        if (exam) {
-            obj[exam.subject] = (obj[exam.subject] || 0) + 1;
-        }
-    });
+//     // Identify which subject is being reviewed based on current results scope
+//     const obj = {}
+//     results.forEach(res => {
+//         const exam = exams.find(e => e.id === res.examId);
+//         if (exam) {
+//             obj[exam.subject] = (obj[exam.subject] || 0) + 1;
+//         }
+//     });
 
-    const activeSubjects = Object.keys(obj);
-    if (activeSubjects.length === 0) {
-        subject.innerHTML = "--";
-        return;
-    }
+//     const activeSubjects = Object.keys(obj);
+//     if (activeSubjects.length === 0) {
+//         subject.innerHTML = "--";
+//         return;
+//     }
 
-    subject.innerHTML=`${activeSubjects.reduce((a, b) => obj[a] > obj[b] ? a : b)}`
-}
+//     subject.innerHTML=`${activeSubjects.reduce((a, b) => obj[a] > obj[b] ? a : b)}`
+// }
 
 function getReviews(){
     const pending = results.filter(r => !r.feedback || r.feedback.trim() === '').length;
