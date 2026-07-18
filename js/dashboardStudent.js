@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         <span>
                             <i class="bi bi-calendar-event"></i>
-                            ${new Date(exam.dateTime).toLocaleDateString()}
+                            ${exam.dateTime}
                         </span>
                     </div>
                     <div class="exam-info">
