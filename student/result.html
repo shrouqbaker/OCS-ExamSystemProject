@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Exam Result | ScienceNest</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  >
+
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body class="exam-result-body">
+
+  <header class="result-header">
+
+    <a
+      href="dashboard.html"
+      class="result-logo"
+    >
+      <span class="result-logo__icon">
+        <i class="bi bi-rocket-takeoff-fill"></i>
+      </span>
+
+      <span>ScienceNest</span>
+    </a>
+
+    <div class="result-header__user">
+
+      <span id="studentName">
+        Student
+      </span>
+
+      <div
+        id="studentAvatar"
+        class="result-avatar"
+      >
+        S
+      </div>
+
+    </div>
+
+  </header>
+
+  <main
+    id="resultPage"
+    class="result-page"
+  >
+
+    <section class="result-content">
+
+      <div class="result-message-area">
+
+        <div
+          id="resultFace"
+          class="result-face"
+        >
+          <i
+            id="resultFaceIcon"
+            class="bi bi-emoji-smile-fill"
+          ></i>
+        </div>
+
+        <p
+          id="resultStatusLabel"
+          class="result-status-label"
+        >
+          Mission completed
+        </p>
+
+        <h1 id="resultHeading">
+          Great job!
+        </h1>
+
+        <h2 id="resultSubheading">
+          You passed the exam.
+        </h2>
+
+        <p
+          id="resultDescription"
+          class="result-description"
+        >
+          Your result has been saved successfully.
+        </p>
+
+        <a
+          href="review-exam.html"
+          class="quick-review-link"
+        >
+          <i class="bi bi-eye-fill"></i>
+          Quick Review
+        </a>
+
+      </div>
+
+      <article class="result-score-card">
+
+        <span class="final-score-label">
+          Final Score
+        </span>
+
+        <div class="final-score">
+
+          <strong id="finalScore">
+            0
+          </strong>
+
+          <span>/ 100</span>
+
+        </div>
+
+        <div class="score-progress">
+
+          <div
+            id="scoreProgressFill"
+            class="score-progress__fill"
+          ></div>
+
+        </div>
+
+        <div class="score-information">
+
+          <div class="result-stat">
+
+            <span class="result-stat__icon">
+              <i class="bi bi-stopwatch-fill"></i>
+            </span>
+
+            <strong id="timeTaken">
+              00:00
+            </strong>
+
+            <span>Time Taken</span>
+
+          </div>
+
+          <div class="result-stat">
+
+            <span class="result-stat__icon">
+              <i class="bi bi-check-circle-fill"></i>
+            </span>
+
+            <strong id="correctAnswers">
+              0/0
+            </strong>
+
+            <span>Correct</span>
+
+          </div>
+
+        </div>
+
+        <div class="result-grade">
+
+          <span>Grade</span>
+
+          <strong id="resultGrade">
+            F
+          </strong>
+
+        </div>
+
+        <a
+  href="review-exam.html"
+  class="review-answers-button"
+>
+  <i class="bi bi-eye-fill"></i>
+  Review Answers
+</a>
+
+        <a
+          href="dashboard.html"
+          class="back-dashboard-button"
+        >
+          <i class="bi bi-house-door-fill"></i>
+          Back to Dashboard
+        </a>
+
+      </article>
+
+    </section>
+
+  </main>
+
+  <script src="../js/db.js"></script>
+  <script src="../js/result.js"></script>
+
+</body>
+
+</html>

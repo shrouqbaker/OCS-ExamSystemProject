@@ -6,12 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const currentPage = document.body.dataset.page;
 
   const pageTitles = {
-    dashboard: "Dashboard",
-    exams: "Available Exams",
-
-    history: "Exam History",
-    profile: "Profile"
-  };
+  dashboard: "Dashboard",
+  exams: "Available Exams",
+  "take-exam": "Take Exam",
+  "review-exam": "Review Exam",
+  history: "Exam History",
+  profile: "Profile"
+};
 
   if (sidebar && role === "student") {
     sidebar.innerHTML = `
