@@ -222,113 +222,129 @@ function addResult(studentId, examId, answers, score, grade, passed, feedback) {
 //Backend
 
 
+// function seedDatabase(){
+
+//     if(getUsers().length > 1) return;
+
+//     const teacher = addUser(
+//     "teacher",
+//     "Dr. Ahmad",
+//     "Male",
+//     "2000312489",
+//     "0791231231",
+//     "dr.ahmad",
+//     "password123",
+//     "Teaching Science",
+//     10
+//   );
+
+
+//     /* Students */
+
+//     const s1 = addStudent(
+//         "Alex Rivera",
+//         "Male",
+//         "2001123123123",
+//         "0791111111",
+//         "alex",
+//         "123456"
+//     );
+
+//     const s2 = addStudent(
+//         "Sara Ali",
+//         "Female",
+//         "2002456456456",
+//         "0792222222",
+//         "sara",
+//         "123456"
+//     );
+
+//     const s3 = addStudent(
+//         "John Smith",
+//         "Male",
+//         "2003567567567",
+//         "0793333333",
+//         "john",
+//         "123456"
+//     );
+
+//     const s4 = addStudent(
+//         "Lina Omar",
+//         "Female",
+//         "2004678678678",
+//         "0794444444",
+//         "lina",
+//         "123456"
+//     );
+
+//     const s5 = addStudent(
+//         "Mohammad Ahmad",
+//         "Male",
+//         "2005789789789",
+//         "0795555555",
+//         "mohammad",
+//         "123456"
+//     );
+
+//     /* Exams */
+
+//     const e1 = addExam(
+//         "Molecular Biology Quiz",
+//         "Biology",
+//         "2026-10-24",
+//         60,
+//         20,
+//         "active",
+//         teacher.id
+//     );
+
+//     const e2 = addExam(
+//         "Chemical Bonding Final",
+//         "Chemistry",
+//         "2026-10-27T11:30",
+//         90,
+//         25,
+//         "active",
+//         teacher.id
+//     );
+
+//     const e3 = addExam(
+//         "Cell Structure",
+//         "Biology",
+//         "2026-11-02T10:00",
+//         45,
+//         15,
+//         "inactive",
+//         teacher.id
+//     );
+
+//     /* Results */
+
+//     addResult(s1.id,e1.id,[],92,"A",true,"Excellent");
+//     addResult(s2.id,e1.id,[],87,"B+",true,"Good");
+//     addResult(s3.id,e1.id,[],78,"B",true,"");
+//     addResult(s4.id,e2.id,[],95,"A+",true,"Excellent");
+//     addResult(s5.id,e2.id,[],66,"C",true,"Needs improvement");
+
+// }
 function seedDatabase(){
+    if (getUsers().length > 0) return;
 
-    if(getUsers().length > 1) return;
-
-    const teacher = addUser(
-    "teacher",
-    "Dr. Ahmad",
-    "Male",
-    "2000312489",
-    "0791231231",
-    "dr.ahmad",
-    "password123",
-    "Teaching Science",
-    10
-  );
-
-
-    /* Students */
-
-    const s1 = addStudent(
-        "Alex Rivera",
+    addUser(
+        "teacher",
+        "Dr. Ahmad",
         "Male",
-        "2001123123123",
-        "0791111111",
-        "alex",
-        "123456"
+        "2000312489",
+        "0791231231",
+        "dr.ahmad",
+        "password123",
+        "Teaching Science",
+        10
     );
-
-    const s2 = addStudent(
-        "Sara Ali",
-        "Female",
-        "2002456456456",
-        "0792222222",
-        "sara",
-        "123456"
-    );
-
-    const s3 = addStudent(
-        "John Smith",
-        "Male",
-        "2003567567567",
-        "0793333333",
-        "john",
-        "123456"
-    );
-
-    const s4 = addStudent(
-        "Lina Omar",
-        "Female",
-        "2004678678678",
-        "0794444444",
-        "lina",
-        "123456"
-    );
-
-    const s5 = addStudent(
-        "Mohammad Ahmad",
-        "Male",
-        "2005789789789",
-        "0795555555",
-        "mohammad",
-        "123456"
-    );
-
-    /* Exams */
-
-    const e1 = addExam(
-        "Molecular Biology Quiz",
-        "Biology",
-        "2026-10-24",
-        60,
-        20,
-        "active",
-        teacher.id
-    );
-
-    const e2 = addExam(
-        "Chemical Bonding Final",
-        "Chemistry",
-        "2026-10-27T11:30",
-        90,
-        25,
-        "active",
-        teacher.id
-    );
-
-    const e3 = addExam(
-        "Cell Structure",
-        "Biology",
-        "2026-11-02T10:00",
-        45,
-        15,
-        "inactive",
-        teacher.id
-    );
-
-    /* Results */
-
-    addResult(s1.id,e1.id,[],92,"A",true,"Excellent");
-    addResult(s2.id,e1.id,[],87,"B+",true,"Good");
-    addResult(s3.id,e1.id,[],78,"B",true,"");
-    addResult(s4.id,e2.id,[],95,"A+",true,"Excellent");
-    addResult(s5.id,e2.id,[],66,"C",true,"Needs improvement");
-
 }
 
 seedDatabase()
+
 
 
     //AUTHENTICATION
@@ -432,20 +448,29 @@ function getAvailableExamsForStudent(studentId){
     return available
 }
 
-
 function getAnswerReview(resultId){
     const result = getResultById(resultId);
     const questions = getQuestionsByExam(result.examId);
 
-    return questions.map( question => {
+    return questions.map(question => {
         const studentAnswer = result.answers.find(a => a.questionId == question.id)?.studentAnswer;
-        return{
-        ...question ,
-        "resultId":resultId,
-        "studentId": result.studentId,
-        "studentAnswer": studentAnswer,
-        'isCorrect': studentAnswer === question.correctAnswer,}
-    })
+
+        let isCorrect;
+        if (question.type === "multiAnswer") {
+            const sa = studentAnswer || [];
+            isCorrect = sa.length === question.correctAnswer.length && question.correctAnswer.every(id => sa.includes(id));
+        } else {
+            isCorrect = studentAnswer === question.correctAnswer;
+        }
+
+        return {
+            ...question,
+            resultId: resultId,
+            studentId: result.studentId,
+            studentAnswer: studentAnswer,
+            isCorrect: isCorrect
+        };
+    });
 }
 
 function updateResultFeedback (resultId,feedback){

@@ -11,7 +11,7 @@ const result = oneToMany(ansWithExsmd,results,"resultId","id","resultInfo")
 const feedbackbtn = document.getElementById("saveFeedbackBtn")
 
 
-console.log(result)
+console.log(ans)
 
 document.addEventListener("DOMContentLoaded", function () {
     requireRole('teacher')
@@ -91,7 +91,7 @@ function mcp(order, isCorrect, text, options, correctAnswer, studentAnswer){
     </span>
   </div>
 
-  <p class="exam-review-question__text">"${text}"</p>
+  <p class="exam-review-question__text">${text}</p>
 
   <div class="exam-review-question__options">
     ${options.map(opt => {
@@ -104,8 +104,7 @@ function mcp(order, isCorrect, text, options, correctAnswer, studentAnswer){
 </div>`
     questionsReview.appendChild(div.firstElementChild)
 }
-
-function multiAnswer(order, isCorrect, text, options, correctAnswer, studentAnswer){
+function multiAnswer(order, isCorrect, title, options, correctAnswer, studentAnswer){
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
@@ -117,14 +116,35 @@ function multiAnswer(order, isCorrect, text, options, correctAnswer, studentAnsw
     </span>
   </div>
 
-  <p class="exam-review-question__text">"${text}"</p>
+  <p class="exam-review-question__text">${title}</p>
 
   <div class="exam-review-question__options">
     ${options.map(opt => {
         const id = Object.keys(opt)[0]
         const text = opt[id]
-        const stateClass = correctAnswer.includes(id) ? 'exam-review-question__option--correct' : (studentAnswer.includes(id) ? 'exam-review-question__option--selected-wrong' : '')
-        return `<div class="exam-review-question__option ${stateClass}">${text} ${correctAnswer.includes(id) ? '<i class="fa-solid fa-check-circle"></i>' : ''}</div>`
+        const isCorrectOption = correctAnswer.includes(id)
+        const wasSelected = studentAnswer.includes(id)
+
+        let stateClass = ''
+        let icon = ''
+        let tag = ''
+
+        if (isCorrectOption && wasSelected) {
+            stateClass = 'exam-review-question__option--correct'
+            icon = '<i class="fa-solid fa-check-circle"></i>'
+        } else if (isCorrectOption && !wasSelected) {
+            stateClass = 'exam-review-question__option--missed'
+            tag = '<span class="exam-review-question__option-tag">Correct answer, not selected</span>'
+        } else if (!isCorrectOption && wasSelected) {
+            stateClass = 'exam-review-question__option--selected-wrong'
+            icon = '<i class="fa-solid fa-times-circle"></i>'
+            tag = '<span class="exam-review-question__option-tag">Student picked this</span>'
+        }
+
+        return `<div class="exam-review-question__option ${stateClass}">
+            <span>${text}</span>
+            <span class="d-flex align-items-center gap-2">${tag}${icon}</span>
+        </div>`
     }).join("")}
   </div>
 </div>`
@@ -143,7 +163,7 @@ function trueFalse(order, isCorrect, text, correctAnswer, studentAnswer){
     </span>
   </div>
 
-  <p class="exam-review-question__text">"${text}"</p>
+  <p class="exam-review-question__text">${text}</p>
 
   <div class="exam-review-question__truefalse">
     <div class="exam-review-question__option ${correctAnswer === true ? 'exam-review-question__option--correct' : (studentAnswer === true ? 'exam-review-question__option--selected-wrong' : '')}">
@@ -168,7 +188,7 @@ function shortAnswer(order, isCorrect, text, studentAnswer, correctAnswer){
     </span>
   </div>
 
-  <p class="exam-review-question__text">"${text}"</p>
+  <p class="exam-review-question__text">${text}</p>
 
   <div class="exam-review-question__answer-box">
     "${studentAnswer ?? ''}"
