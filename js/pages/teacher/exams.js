@@ -1,3 +1,7 @@
+
+
+login("dr.ahmad","password123")
+
 document.addEventListener("DOMContentLoaded", function () {
   loadExams();
 

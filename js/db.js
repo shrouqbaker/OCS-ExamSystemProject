@@ -25,10 +25,10 @@ function clearCurrent(key) {
 
     //Relations and Joins
 
-function oneToMany (parents,children,fk,resultKey){
+function oneToMany (parents,children,pk,fk,resultKey){
     return parents.map(parent =>({
         ... parent,
-        [resultKey]: children.filter(child => child[fk] === parent.id) 
+        [resultKey]: children.filter(child => child[fk] === parent[pk]) 
     }))
 }
 
@@ -340,10 +340,36 @@ function getAnswerReview(resultId){
     return questions.map( question => {
         const studentAnswer = result.answers.find(a => a.questionId == question.id)?.studentAnswer;
         return{
-        ...question , 
+        ...question ,
+        "resultId":resultId,
+        "studentId": result.studentId,
         "studentAnswer": studentAnswer,
         'isCorrect': studentAnswer === question.correctAnswer,}
     })
 }
 
+function updateResultFeedback (resultId,feedback){
+    const results = getResults();
+    const result = results.find(e => e.id === resultId);
+    if (!result) return null;
+    result.feedback = feedback;
+    setTable('results', results);
+    return result;
+}
 
+function gradeTier(grade){
+    const letter = grade[0]
+    if (letter === 'A') return 'high'
+    if (letter === 'B' || letter === 'C') return 'mid'
+    return 'low' // D, F
+}
+
+function gradeCalc(score){
+  let grade
+  if (score >= 90) grade = 'A';
+    else if (score >= 80) grade = 'B';
+    else if (score >= 70) grade = 'C';
+    else if (score >= 60) grade = 'D';
+    else if (score >= 50) grade = 'F';
+  return grade
+}

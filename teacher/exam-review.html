@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScienceNest - Exam Review</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body data-role="teacher" data-page="results">
+
+  <main class="exam-review-page">
+    <div class="container-fluid exam-review-page__container">
+
+      <nav class="exam-review__breadcrumb">
+        <a href="results.html">Results</a>
+        <span>&gt;</span>
+        <span id="breadcrumbStudentName"></span>
+        <span>&gt;</span>
+        <strong>Exam Review</strong>
+      </nav>
+
+      <div class="row g-4 exam-review__header-row">
+
+        <div class="col-lg-9">
+          <div class="exam-review__student-card" id="studentInfoCard">
+            <!-- Avatar, name, exam title, date, time taken, score circle - filled in by exam-review.js -->
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="exam-review__stat-card" id="questionsStatCard">
+            <!-- "Questions X Total" - filled in by exam-review.js -->
+          </div>
+
+          <div class="exam-review__trivia-card">
+            <span class="exam-review__trivia-title">
+              <i class="fa-solid fa-lightbulb"></i> Did you know?
+            </span>
+            <p class="exam-review__trivia-text">
+              There are more atoms in a single glass of water than glasses of water in all the Earth's oceans!
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="questionsReview">
+        <!-- One card per question, filled in by exam-review.js from getAnswerReview(resultId) -->
+      </div>
+
+      <div id="feedbackSection" class="exam-review-question__feedback">
+        <div class="exam-review-question__feedback-header">
+          <span class="exam-review-question__feedback-title">
+            <i class="fa-solid fa-pen"></i> Teacher Feedback (optional)
+          </span>
+        </div>
+        <textarea id="feedbackTextarea" class="inp w-100 exam-review-question__feedback-textarea" rows="3" placeholder="Leave an optional comment for this student..."></textarea>
+        <div class="d-flex justify-content-end align-items-center gap-3">
+          <span id="feedbackSavedMsg" class="exam-review-question__feedback-saved">
+            <i class="fa-solid fa-check"></i> Saved!
+          </span>
+          <button type="button" id="saveFeedbackBtn" class="exam-review-question__save-btn btn--secondary">Save Feedback</button>
+      </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../js/db.js"></script>
+  <script src="../js/pages/teacher/exam-review.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

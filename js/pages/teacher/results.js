@@ -7,6 +7,9 @@ const countt = document.getElementById("resultsCountLabel")
 const prevBtn = document.getElementById("prevPageBtn")
 const nextBtn = document.getElementById("nextPageBtn")
 
+const params = new URLSearchParams(window.location.search);
+const examId = params.get("examId");
+
 const results = getResults()
 const exams = getExams()
 const users = getUsers()
@@ -15,6 +18,7 @@ const PAGE_SIZE = 4
 let currentPage = 0
 
 document.addEventListener("DOMContentLoaded", function () {
+    requireRole('teacher')
     getAvg()
     getCount()
     getSubject()
@@ -92,9 +96,8 @@ function getReviews(){
     const pending = results.filter(r => !r.feedback || r.feedback.trim() === '').length;
     reviews.innerHTML = `${pending}`;
 }
-
 function addToTable(name,title,date,score,grade,resultId){
-    const tier = score >= 85 ? "high" : score >= 60 ? "mid" : "low";
+    const tier = gradeTier(grade);
 
     const row = document.createElement("tr")
     row.innerHTML=`
