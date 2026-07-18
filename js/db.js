@@ -221,114 +221,75 @@ function addResult(studentId, examId, answers, score, grade, passed, feedback) {
 
 //Backend
 
-
 function seedDatabase(){
 
-    if(getUsers().length > 1) return;
+    if (getUsers().length > 0) return;
 
     const teacher = addUser(
-    "teacher",
-    "Dr. Ahmad",
-    "Male",
-    "2000312489",
-    "0791231231",
-    "dr.ahmad",
-    "password123",
-    "Teaching Science",
-    10
-  );
-
-
-    /* Students */
-
-    const s1 = addStudent(
-        "Alex Rivera",
+        "teacher",
+        "Dr. Ahmad",
         "Male",
-        "2001123123123",
-        "0791111111",
-        "alex",
-        "123456"
+        "2000312489",
+        "0791231231",
+        "dr.ahmad",
+        "password123",
+        "Teaching Science",
+        10
     );
 
-    const s2 = addStudent(
-        "Sara Ali",
-        "Female",
-        "2002456456456",
-        "0792222222",
-        "sara",
-        "123456"
-    );
+    /* Students - 20 total, generated in a loop */
+    const students = [];
+    for (let i = 1; i <= 20; i++) {
+        students.push(addStudent(
+            `Student ${i}`,
+            i % 2 === 0 ? "Female" : "Male",
+            `20${String(i).padStart(2, '0')}0000001`,
+            `07900000${String(i).padStart(2, '0')}`,
+            `student${i}`,
+            "123456"
+        ));
+    }
 
-    const s3 = addStudent(
-        "John Smith",
-        "Male",
-        "2003567567567",
-        "0793333333",
-        "john",
-        "123456"
-    );
-
-    const s4 = addStudent(
-        "Lina Omar",
-        "Female",
-        "2004678678678",
-        "0794444444",
-        "lina",
-        "123456"
-    );
-
-    const s5 = addStudent(
-        "Mohammad Ahmad",
-        "Male",
-        "2005789789789",
-        "0795555555",
-        "mohammad",
-        "123456"
-    );
-
-    /* Exams */
-
-    const e1 = addExam(
+    /* Exam - just 1 */
+    const exam = addExam(
         "Molecular Biology Quiz",
         "Biology",
-        "2026-10-24",
+        "2026-10-24T09:00",
         60,
         20,
         "active",
         teacher.id
     );
 
-    const e2 = addExam(
-        "Chemical Bonding Final",
-        "Chemistry",
-        "2026-10-27T11:30",
-        90,
-        25,
-        "active",
-        teacher.id
-    );
+    /* Questions - 20 total, generated in a loop */
+    const questions = [];
+    for (let i = 1; i <= 20; i++) {
+        questions.push(addQuestion(
+            exam.id,
+            "mcq",
+            `Sample Question ${i}: What is the correct option?`,
+            [{ o1: "Option A" }, { o2: "Option B" }, { o3: "Option C" }, { o4: "Option D" }],
+            "o1",
+            5,
+            i
+        ));
+    }
 
-    const e3 = addExam(
-        "Cell Structure",
-        "Biology",
-        "2026-11-02T10:00",
-        45,
-        15,
-        "inactive",
-        teacher.id
-    );
+    /* Results - only the first 10 students (half) have submitted */
+    for (let i = 0; i < 10; i++) {
+        const answers = questions.map((q, idx) => ({
+            questionId: q.id,
+            studentAnswer: idx % 3 === 0 ? "o2" : "o1" // mostly correct, a few wrong for variety
+        }));
 
-    /* Results */
+        const correctCount = answers.filter((a, idx) => a.studentAnswer === questions[idx].correctAnswer).length;
+        const score = Math.round((correctCount / questions.length) * 100);
+        const grade = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F";
 
-    addResult(s1.id,e1.id,[],92,"A",true,"Excellent");
-    addResult(s2.id,e1.id,[],87,"B+",true,"Good");
-    addResult(s3.id,e1.id,[],78,"B",true,"");
-    addResult(s4.id,e2.id,[],95,"A+",true,"Excellent");
-    addResult(s5.id,e2.id,[],66,"C",true,"Needs improvement");
-
+        addResult(students[i].id, exam.id, answers, score, grade, score >= 60, "");
+    }
 }
 seedDatabase()
-
 
 
     //AUTHENTICATION
@@ -358,6 +319,20 @@ function addStudent(fullName, gender, nationalId, phone, username, password) {
     if (isUsernameTaken(username)) return null;
  
     return addUser('student', fullName, gender, nationalId, phone, username, password, '', 0);
+}
+
+function deleteStudent(studentId){
+    const users = getUsers();
+    const filtered = users.filter(u => u.id !== studentId);
+    if (filtered.length === users.length) return false;
+
+    setTable('users', filtered);
+
+    const results = getResults();
+    const filteredResults = results.filter(r => r.studentId !== studentId);
+    setTable('results', filteredResults);
+
+    return true;
 }
 
     //AUTHORIZATION
