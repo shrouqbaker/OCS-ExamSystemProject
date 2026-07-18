@@ -1,0 +1,308 @@
+/* ==================================
+   Hero
+================================== */
+
+.add-student-hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:var(--spacing-2xl);
+}
+
+.page-title{
+
+    font-family:var(--font-heading);
+
+    font-size:var(--font-size-2xl);
+
+    font-weight:var(--font-weight-bold);
+
+    color:var(--color-text-primary);
+
+    margin-bottom:var(--spacing-xs);
+
+}
+
+.page-subtitle{
+
+    color:var(--color-text-secondary);
+
+    font-size:var(--font-size-base);
+
+}
+
+.hero-icon{
+
+    font-size:5rem;
+
+    color:var(--color-primary-dark);
+
+    opacity:.9;
+
+    transform:rotate(-15deg);
+
+}
+
+
+/* ==================================
+   Card
+================================== */
+
+.add-student-card{
+
+    position:relative;
+
+    background:var(--color-background);
+
+    border-radius:var(--radius-lg);
+
+    padding:var(--spacing-2xl);
+
+    box-shadow:var(--shadow-sm);
+
+    overflow:hidden;
+
+}
+
+.add-student-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:6px;
+    height:100%;
+
+    background:var(--color-primary);
+
+}
+
+
+/* ==================================
+   Card Title
+================================== */
+
+.card-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:var(--spacing-xl);
+
+}
+
+.card-title i{
+
+    font-size:1.6rem;
+
+    color:var(--color-primary-dark);
+
+}
+
+.card-title h2{
+
+    margin:0;
+
+    font-family:var(--font-heading);
+
+    font-size:var(--font-size-xl);
+
+    font-weight:var(--font-weight-bold);
+
+}
+
+
+/* ==================================
+   Labels
+================================== */
+
+.add-student-card label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:var(--color-text-secondary);
+
+    font-size:var(--font-size-sm);
+
+    font-weight:var(--font-weight-md);
+
+}
+
+
+/* ==================================
+   Inputs
+================================== */
+
+.add-student-card .form-control,
+.add-student-card .form-select{
+
+    height:56px;
+
+    border-radius:var(--radius-full);
+
+    border:1px solid var(--color-border);
+
+    background:var(--color-background);
+
+    padding:0 22px;
+
+    transition:.3s;
+
+}
+
+.add-student-card .form-control:focus,
+.add-student-card .form-select:focus{
+
+    border-color:var(--color-primary);
+
+    box-shadow:0 0 0 .2rem rgba(76,176,80,.15);
+
+}
+
+
+/* ==================================
+   Buttons
+================================== */
+
+.form-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:18px;
+
+    margin-top:var(--spacing-2xl);
+
+}
+
+.btn-cancel{
+
+    min-width:170px;
+
+    height:54px;
+
+    border-radius:var(--radius-full);
+
+    border:2px solid var(--color-secondary);
+
+    background:transparent;
+
+    color:var(--color-secondary);
+
+    font-weight:var(--font-weight-bold);
+
+    transition:.3s;
+
+}
+
+.btn-cancel:hover{
+
+    background:var(--color-secondary);
+
+    color:var(--color-text-inverse);
+
+}
+
+.form-actions .btn--primary{
+
+    min-width:250px;
+
+    height:54px;
+
+}
+
+
+/* ==================================
+   Decoration
+================================== */
+
+.add-student-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:-20px;
+
+    bottom:-20px;
+
+    width:90px;
+
+    height:90px;
+
+    border:8px solid var(--color-secondary-light);
+
+    border-radius:24px;
+
+    transform:rotate(25deg);
+
+    opacity:.55;
+
+}
+
+
+/* ==================================
+   Responsive
+================================== */
+
+@media(max-width:992px){
+
+.add-student-hero{
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.hero-icon{
+
+align-self:flex-end;
+
+}
+
+.form-actions{
+
+flex-direction:column;
+
+}
+
+.btn-cancel,
+.form-actions .btn--primary{
+
+width:100%;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.add-student-card{
+
+padding:var(--spacing-xl);
+
+}
+
+.page-title{
+
+font-size:2.2rem;
+
+}
+
+.hero-icon{
+
+display:none;
+
+}
+
+}
