@@ -1,0 +1,179 @@
+.exams-page {
+  padding: var(--spacing-2xl) 0;
+}
+
+.exams-page__header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.exams-page__title {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.exams-page__title .icon {
+  color: var(--color-primary);
+  font-size: 0.8em;
+}
+
+.exams-page__subtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ===== Exam Card ===== */
+.exam-card {
+  background-color: var(--color-background);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: .35s;
+}
+
+.exam-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.exam-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.exam-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-lg);
+}
+
+.exam-card__title {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.exam-card__closing {
+  background-color: var(--color-background-alt);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.exam-card__closing-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.exam-card__closing-date {
+  display: block;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-md);
+}
+
+/* ===== Toggle Switch ===== */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle__track {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: .3s;
+}
+
+.toggle__track::before {
+  content: '';
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--color-background);
+  border-radius: 50%;
+  transition: .3s;
+}
+
+.toggle input:checked + .toggle__track {
+  background-color: var(--color-primary);
+}
+
+.toggle input:checked + .toggle__track::before {
+  transform: translateX(24px);
+}
+
+/* ===== Secondary Button (purple) ===== */
+.btn--secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--radius-full);
+  border: none;
+  transition: .3s;
+}
+
+.btn--secondary:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ================= Tablet ================= */
+@media (max-width: 992px) {
+  .exams-page {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .exams-page__title {
+    font-size: 1.75rem;
+  }
+}
+
+/* ================= Mobile ================= */
+@media (max-width: 576px) {
+  .exams-page__header {
+    text-align: center;
+  }
+
+  .exams-page__header > div {
+    width: 100%;
+  }
+
+  .exams-page__header .btn--primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .exam-card {
+    padding: var(--spacing-md);
+  }
+}

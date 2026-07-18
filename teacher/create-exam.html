@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Exam</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body data-role="teacher" data-page="create-exam">
+  <!-- Shared Sidebar Layout Infrastructure -->
+  <div class="dashboard-layout">
+
+    <!-- Dynamic Sidebar Injection Anchor -->
+    <aside id="sidebar" class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1">
+    </aside>
+
+    <main class="dashboard-main">
+
+      <!-- Dynamic Topbar Injection Anchor -->
+      <div id="topbar"></div>
+
+      <!-- Core Contextual Workspace Container -->
+      <div class="dashboard-content">
+        <section class="create-exam-page">
+          <div class="container create-exam-page__container">
+
+            <!-- Card Segment: Configurable Meta Criteria -->
+            <div class="exam-form__card">
+              <h2 class="exam-form__card-title">
+                <i class="fa-solid fa-circle-info icon"></i> Basic Details
+              </h2>
+              <form onsubmit="return false;" id="basicDetailsForm">
+
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="exam-title">Exam Title</label>
+                    <input type="text" id="exam-title" name="title" placeholder="e.g. Intro to Photosynthesis" class="inp w-100">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="exam-date">Date</label>
+                    <input type="date" id="exam-date" name="date" class="inp w-100">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="exam-duration">Duration (minutes)</label>
+                    <input type="number" id="exam-duration" name="duration" placeholder="e.g. 60" class="inp w-100">
+                  </div>
+                </div>
+
+                <hr class="exam-form__divider">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                  <div>
+                    <span class="exam-form__status-label">Exam Status</span>
+                    <p class="exam-form__status-text">Active exams appear on the student dashboard. Inactive exams remain hidden until activated.</p>
+                  </div>
+
+                  <label class="toggle">
+                    <input type="checkbox" id="exam-status" name="status">
+                    <span class="toggle__track"></span>
+                  </label>
+                </div>
+
+              </form>
+            </div>
+
+            <!-- Intermediary Workspace Context Action Row -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 exam-form__questions-header">
+              <h2 class="exam-form__section-title">
+                <i class="fa-solid fa-pen-to-square icon"></i> Questions
+              </h2>
+
+              <button type="button" id="addQuestionBtn" class="btn--secondary" data-bs-toggle="modal" data-bs-target="#questionTypeModal">
+                <i class="fa-solid fa-plus icon"></i> Add Question
+              </button>
+            </div>
+
+            <!-- Question Card Target Rendering Injection Slot -->
+            <div id="questionsList">
+              <!-- Question cards (each its own <form>) are added here by create-exam.js -->
+            </div>
+
+            <!-- Footer Section: Submission Node Placement -->
+            <div class="d-flex justify-content-end exam-form__publish">
+              <button type="button" id="publishExamBtn" class="btn--primary">
+                Publish Exam <i class="fa-solid fa-rocket icon"></i>
+              </button>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Question Type Prompt Dialog Overlay Component Stack -->
+  <div class="modal fade" id="questionTypeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content question-type-modal">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Choose Question Type</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <button type="button" id="mcp" class="question-type-option question-type-option--purple" data-type="mcq" data-bs-dismiss="modal">
+            <i class="fa-solid fa-circle-dot icon"></i>
+            <div>
+              <span class="question-type-option__title">Multiple Choice</span>
+              <span class="question-type-option__desc">Four options, one correct answer</span>
+            </div>
+          </button>
+
+          <button type="button" id="ma" class="question-type-option question-type-option--red" data-type="multiAnswer" data-bs-dismiss="modal">
+            <i class="fa-solid fa-square-check icon"></i>
+            <div>
+              <span class="question-type-option__title">Multiple Answers</span>
+              <span class="question-type-option__desc">Four options, one or more correct</span>
+            </div>
+          </button>
+
+          <button type="button" id="tf" class="question-type-option question-type-option--green" data-type="trueFalse" data-bs-dismiss="modal">
+            <i class="fa-solid fa-toggle-on icon"></i>
+            <div>
+              <span class="question-type-option__title">True or False</span>
+              <span class="question-type-option__desc">A single true/false statement</span>
+            </div>
+          </button>
+
+          <button type="button" id="num" class="question-type-option question-type-option--gray" data-type="shortAnswer" data-bs-dismiss="modal">
+            <span class="question-type-option__numeric-icon">123</span>
+            <div>
+              <span class="question-type-option__title">Numeric Entry</span>
+              <span class="question-type-option__desc">Student types in a number</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Initialization Script Orchestration Stack -->
+  <script src="../js/db.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/pages/teacher/create-exam.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
