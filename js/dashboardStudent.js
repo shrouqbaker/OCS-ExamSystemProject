@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const examContainer =
         document.getElementById("availableExamList");
 
+
+
     if (availableExams.length === 0) {
 
         examContainer.innerHTML = `
@@ -50,62 +52,123 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } else {
 
+
         availableExams.slice(0, 3).forEach(exam => {
+            const teacher = getUserById(exam.createdBy);
+
+            const teacherName = teacher
+                ? teacher.fullName
+                : "Science Teacher";
 
             examContainer.innerHTML += `
 
         <div class="col-lg-4 col-md-6">
+        
+    <article class="exam-card">
 
-            <div class="exam-card">
+      <div class="exam-card__image-wrapper">
 
-                <img
-                    src="../assets/images/dash-exam.png"
-                    class="exam-image"
-                    alt="${exam.title}"
-                >
+        <img
+          src="../images/science.jpg"
+          alt="Science exam"
+          class="exam-card__image"
+        >
 
-                <div class="exam-body">
+        <span class="exam-card__time">
+          <i class="bi bi-clock"></i>
+          ${exam.duration} mins
+        </span>
 
+      </div>
 
-                    <h5 class="exam-title">
-                        ${exam.title}
-                    </h5>
+      <div class="exam-card__body">
 
-                    <div class="exam-info">
+        <div class="exam-card__meta">
+          <span>
+            <i class="bi bi-ui-checks"></i>
+             ${exam.numQuestions} Questions
+          </span>
+        </div>
 
-                        <span>
+        <h2 class="exam-card__title">
+          ${exam.title}
+        </h2>
+        <div class="exam-card__teacher">
+         
                             <i class="bi bi-calendar-event"></i>
                             ${exam.dateTime}
-                        </span>
-                    </div>
-                    <div class="exam-info">
-                        <span>
-                            <i class="bi bi-clock"></i>
-                            ${exam.duration} Minutes
-                        </span>
+                        
+                        </div>
+        
 
-                        <span>
-                            <i class="bi bi-question-circle"></i>
-                            ${exam.numQuestions} Questions
-                        </span>
+        <div class="exam-card__teacher">
+        
+          <i class="bi bi-person-circle"></i>
+          <span>${teacherName}</span>
+        </div>
 
-                    </div>
+        <button
+          type="button"
+          class="exam-card__button"
+          data-exam-id="${exam.id}"
+        >
+          Start Exam
+        </button>
 
-                    <a href="take-exam.html?id=${exam.id}">
-                      <button class="start-btn">
-                        Start Exam
-                        </button>
-                    </a>
+      </div>
 
-                </div>
+    </article>
+  
 
-            </div>
+           
 
         </div>
 
     `;
 
         });
+        // ================= Start Exam =================
+
+        document.querySelectorAll(".exam-card__button").forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                const examId = this.dataset.examId;
+
+                startExam(examId);
+
+            });
+
+        });
+        function startExam(examId) {
+            const currentUser = getCurrent("currentUser");
+
+            if (!currentUser || currentUser.role !== "student") {
+                window.location.href = "../login.html";
+                return;
+            }
+
+            const exam = getExamById(examId);
+
+            if (!exam || exam.status !== "active") {
+                alert("This exam is not available.");
+                return;
+            }
+
+            if (hasStudentTakenExam(currentUser.id, examId)) {
+                alert("You have already taken this exam.");
+                return;
+            }
+
+            setCurrent("currentExam", {
+                examId: exam.id,
+                studentId: currentUser.id,
+                startedAt: new Date().toISOString(),
+                answers: []
+            });
+
+            window.location.href = "take-exam.html";
+        }
     }
 
     // ================= Recent Results =================
@@ -157,22 +220,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 </td>
 
-                <td>
+               <td>
 
-                    <a href="history.html"
-                       class="review-btn">
+    <button
+        type="button"
+        class="review-btn"
+        data-result-id="${result.id}">
+        Review
+    </button>
 
-                        Review
-
-                    </a>
-
-                </td>
+</td>
 
             </tr>
 
         `;
 
             });
+        document.querySelectorAll(".review-btn").forEach(button => {
+
+            button.addEventListener("click", function () {
+
+                const resultId = this.dataset.resultId;
+
+                setCurrent("currentResult", {
+                    resultId: resultId
+                });
+
+                window.location.href = "review-exam.html";
+
+            });
+
+        });
     }
+
 
 });

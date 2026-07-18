@@ -93,8 +93,16 @@ function createExamCard(exam) {
         <h2 class="exam-card__title">
           ${exam.title}
         </h2>
+        <div class="exam-card__teacher">
+         
+                            <i class="bi bi-calendar-event"></i>
+                            ${exam.dateTime}
+                        
+                        </div>
+        
 
         <div class="exam-card__teacher">
+        
           <i class="bi bi-person-circle"></i>
           <span>${teacherName}</span>
         </div>

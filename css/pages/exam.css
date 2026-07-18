@@ -126,15 +126,15 @@
 
 
 .exam-card__title {
-  min-height: 48px;
-  margin-bottom: var(--spacing-md);
+  /* min-height: 48px; */
+  /* margin-bottom: var(--spacing-md); */
   font-size: var(--font-size-lg);
 }
 
 .exam-card__teacher {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
   margin-bottom: var(--spacing-md);
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
