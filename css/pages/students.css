@@ -1,0 +1,326 @@
+/* ===========================
+   Hero
+=========================== */
+
+.students-hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:var(--spacing-xl);
+}
+
+.students-title{
+    font-family:var(--font-heading);
+    font-size:var(--font-size-2xl);
+    font-weight:var(--font-weight-bold);
+    color:var(--color-text-primary);
+    margin-bottom:var(--spacing-xs);
+}
+
+.students-subtitle{
+    color:var(--color-text-secondary);
+    font-size:var(--font-size-base);
+}
+
+.students-hero__shapes{
+
+    position:relative;
+
+    width:220px;
+    height:90px;
+
+}
+
+.students-hero__shapes i{
+
+    position:absolute;
+
+    opacity:.22;
+
+}
+
+
+
+
+.shape-gray{
+
+    font-size:3.8rem;
+
+    color:var(--color-border);
+
+    right:0;
+    top:5px;
+
+    transform:rotate(-35deg);
+
+}
+
+
+/* ===========================
+   Toolbar
+=========================== */
+
+.students-toolbar{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-bottom:var(--spacing-xl);
+
+}
+
+
+/* ===========================
+   Table Card
+=========================== */
+
+.dashboard-section{
+
+    background:var(--color-background);
+
+    border:1px solid var(--color-border);
+
+    border-radius:var(--radius-lg);
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+
+/* ===========================
+   Table
+=========================== */
+
+.dashboard-table{
+
+    margin:0;
+
+}
+
+
+.dashboard-table thead th{
+
+    padding:20px 24px;
+
+    border:none;
+
+    font-size:13px;
+    font-weight: var(--font-weight-bold);
+
+    text-transform:uppercase;
+
+    letter-spacing:.05em;
+
+    color:var(--color-text-primary);
+
+    font-weight:var(--font-weight-bold);
+}
+
+.dashboard-table tbody td{
+
+    padding:22px 24px;
+
+    vertical-align:middle;
+
+    border-color:#edf2f4;
+
+}
+
+.dashboard-table tbody tr{
+
+    transition:.25s;
+
+}
+.dashboard-table tbody tr:hover td{
+    background: var(--color-background-muted);
+}
+
+
+/* ===========================
+   Student Cell
+=========================== */
+
+.student-cell{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.student-avatar{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    background:var(--color-secondary-title);
+
+    color:var(--color-text-inverse);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:500;
+
+}
+
+
+/* ===========================
+   Action Button
+=========================== */
+
+.btn-view{
+
+    border:1.5px solid var(--color-primary-dark);
+
+    color:var(--color-primary-dark);
+
+    background:none;
+
+    border-radius:var(--radius-full);
+
+    padding:8px 18px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.btn-view:hover{
+
+    background:var(--color-primary-dark);
+
+    color:white;
+
+}
+
+
+/* ===========================
+   Footer
+=========================== */
+
+.students-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:var(--spacing-md);
+
+    background:var(--color-background-alt);
+
+}
+
+.students-footer span{
+    color:var(--color-text-secondary);
+}
+
+
+/* ===========================
+   Pagination
+=========================== */
+
+#pagination{
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+.page-btn{
+
+    width:36px;
+
+    height:36px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:.3s;
+
+}
+
+.page-btn.active{
+
+    background:var(--color-primary-dark);
+
+    color:white;
+
+}
+
+.page-btn:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:992px){
+
+.students-hero{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:20px;
+
+}
+
+.students-toolbar{
+
+justify-content:flex-start;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.students-footer{
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.students-title{
+
+font-size:2.2rem;
+
+}
+
+.dashboard-table{
+
+min-width:750px;
+
+}
+
+}
