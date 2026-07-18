@@ -10,7 +10,6 @@ const ansWithExsmd = oneToMany(ansWithStudents,exams,"examId","id","examInfo")
 const result = oneToMany(ansWithExsmd,results,"resultId","id","resultInfo")
 const feedbackbtn = document.getElementById("saveFeedbackBtn")
 
-
 console.log(ans)
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -46,8 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
         savedMsg.classList.add("exam-review-question__feedback-saved--visible")
     })
 
-    
+    loadTrivia()
 });
+
+async function loadTrivia(){
+    const triviaText = document.querySelector('.exam-review__trivia-text')
+    try {
+        const response = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random')
+        const data = await response.json()
+        triviaText.innerHTML = data.text
+        console.log(data.text);
+        
+    } catch (error) {
+        console.log('Trivia API unavailable, showing default fact')
+    }
+}
+
+
 function stuCard(name, title, date, duration, score, grade){
     const tier = gradeTier(grade)
 
@@ -176,7 +190,7 @@ function trueFalse(order, isCorrect, text, correctAnswer, studentAnswer){
 </div>`
     questionsReview.appendChild(div.firstElementChild)
 }
-function shortAnswer(order, isCorrect, text, studentAnswer, correctAnswer){
+function shortAnswer(order, isCorrect, text, correctAnswer, studentAnswer){
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
