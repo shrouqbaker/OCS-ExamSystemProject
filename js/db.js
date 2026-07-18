@@ -25,10 +25,10 @@ function clearCurrent(key) {
 
     //Relations and Joins
 
-function oneToMany (parents,children,fk,resultKey){
+function oneToMany (parents,children,pk,fk,resultKey){
     return parents.map(parent =>({
         ... parent,
-        [resultKey]: children.filter(child => child[fk] === parent.id) 
+        [resultKey]: children.filter(child => child[fk] === parent[pk]) 
     }))
 }
 
@@ -327,8 +327,8 @@ function seedDatabase(){
     addResult(s5.id,e2.id,[],66,"C",true,"Needs improvement");
 
 }
-
 seedDatabase()
+
 
 
     //AUTHENTICATION
@@ -432,316 +432,53 @@ function getAvailableExamsForStudent(studentId){
     return available
 }
 
-
 function getAnswerReview(resultId){
     const result = getResultById(resultId);
     const questions = getQuestionsByExam(result.examId);
 
-    return questions.map( question => {
+    return questions.map(question => {
         const studentAnswer = result.answers.find(a => a.questionId == question.id)?.studentAnswer;
-        return{
-        ...question , 
-        "studentAnswer": studentAnswer,
-        'isCorrect': studentAnswer === question.correctAnswer,}
-    })
-}
-function seedAvailableExamsTestData() {
-  let teacher = getUserByUsername("dr.ahmad");
 
-  if (!teacher) {
-    teacher = addUser(
-      "teacher",
-      "Dr. Ahmad",
-      "Male",
-      "2000312489",
-      "0791231231",
-      "dr.ahmad",
-      "password123",
-      "Teaching Science",
-      10
-    );
-  }
+        let isCorrect;
+        if (question.type === "multiAnswer") {
+            const sa = studentAnswer || [];
+            isCorrect = sa.length === question.correctAnswer.length && question.correctAnswer.every(id => sa.includes(id));
+        } else {
+            isCorrect = studentAnswer === question.correctAnswer;
+        }
 
-  let student = getUserByUsername("rama.student");
-
-  if (!student) {
-    student = addStudent(
-      "Rama Student",
-      "Female",
-      "2004123456",
-      "0790000000",
-      "rama.student",
-      "password123"
-    );
-  }
-
-  const testExams = [
-    {
-      title: "The Solar System",
-      subject: "Science",
-      dateTime: "2026-07-20T10:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Human Body Basics",
-      subject: "Science",
-      dateTime: "2026-07-21T11:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Matter and Materials",
-      subject: "Science",
-      dateTime: "2026-07-22T12:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    },
-    {
-      title: "Plants and Photosynthesis",
-      subject: "Science",
-      dateTime: "2026-07-23T09:00",
-      duration: 30,
-      numQuestions: 5,
-      status: "active"
-    }
-  ];
-
-  const testQuestions = [
-    {
-      examTitle: "The Solar System",
-      type: "mcq",
-      text: "Which planet is closest to the Sun?",
-      options: ["Earth", "Mercury", "Mars", "Jupiter"],
-      correctAnswer: "Mercury",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "The Solar System",
-      type: "trueFalse",
-      text: "The Sun is a star.",
-      options: ["True", "False"],
-      correctAnswer: "True",
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "The Solar System",
-      type: "mcq",
-      text: "Which planet is known as the Red Planet?",
-      options: ["Venus", "Mars", "Saturn", "Neptune"],
-      correctAnswer: "Mars",
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "The Solar System",
-      type: "shortAnswer",
-      text: "How many planets are in the Solar System?",
-      options: [],
-      correctAnswer: "8",
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "The Solar System",
-      type: "mcq",
-      text: "Which planet has rings?",
-      options: ["Mercury", "Earth", "Saturn", "Mars"],
-      correctAnswer: "Saturn",
-      points: 10,
-      order: 5
-    },
-
-    {
-      examTitle: "Human Body Basics",
-      type: "mcq",
-      text: "Which organ pumps blood?",
-      options: ["Brain", "Heart", "Lungs", "Stomach"],
-      correctAnswer: "Heart",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "trueFalse",
-      text: "Humans have two lungs.",
-      options: ["True", "False"],
-      correctAnswer: "True",
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "mcq",
-      text: "Which organ helps us breathe?",
-      options: ["Lungs", "Kidneys", "Skin", "Bones"],
-      correctAnswer: "Lungs",
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "shortAnswer",
-      text: "How many chambers does the heart have?",
-      options: [],
-      correctAnswer: "4",
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Human Body Basics",
-      type: "mcq",
-      text: "Which part protects the brain?",
-      options: ["Ribs", "Skull", "Spine", "Muscles"],
-      correctAnswer: "Skull",
-      points: 10,
-      order: 5
-    },
-
-    {
-      examTitle: "Matter and Materials",
-      type: "mcq",
-      text: "Which is a state of matter?",
-      options: ["Solid", "Light", "Sound", "Heat"],
-      correctAnswer: "Solid",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "trueFalse",
-      text: "Water can exist as a solid.",
-      options: ["True", "False"],
-      correctAnswer: "True",
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "mcq",
-      text: "Ice is an example of:",
-      options: ["Gas", "Liquid", "Solid", "Plasma"],
-      correctAnswer: "Solid",
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "shortAnswer",
-      text: "How many common states of matter are there?",
-      options: [],
-      correctAnswer: "3",
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Matter and Materials",
-      type: "mcq",
-      text: "Steam is a:",
-      options: ["Solid", "Liquid", "Gas", "Metal"],
-      correctAnswer: "Gas",
-      points: 10,
-      order: 5
-    },
-
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "mcq",
-      text: "Which part absorbs water?",
-      options: ["Flower", "Roots", "Fruit", "Leaves"],
-      correctAnswer: "Roots",
-      points: 10,
-      order: 1
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "trueFalse",
-      text: "Plants need sunlight to make food.",
-      options: ["True", "False"],
-      correctAnswer: "True",
-      points: 10,
-      order: 2
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "mcq",
-      text: "Photosynthesis mainly happens in:",
-      options: ["Roots", "Stem", "Leaves", "Flowers"],
-      correctAnswer: "Leaves",
-      points: 10,
-      order: 3
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "shortAnswer",
-      text: "Which gas do plants absorb?",
-      options: [],
-      correctAnswer: "Carbon dioxide",
-      points: 10,
-      order: 4
-    },
-    {
-      examTitle: "Plants and Photosynthesis",
-      type: "mcq",
-      text: "Which pigment makes leaves green?",
-      options: ["Chlorophyll", "Oxygen", "Protein", "Calcium"],
-      correctAnswer: "Chlorophyll",
-      points: 10,
-      order: 5
-    }
-  ];
-
-  testExams.forEach(function (examData) {
-    const existingExam = getExams().find(function (exam) {
-      return exam.title === examData.title;
+        return {
+            ...question,
+            resultId: resultId,
+            studentId: result.studentId,
+            studentAnswer: studentAnswer,
+            isCorrect: isCorrect
+        };
     });
-
-    if (!existingExam) {
-      addExam(
-        examData.title,
-        examData.subject,
-        examData.dateTime,
-        examData.duration,
-        examData.numQuestions,
-        examData.status,
-        teacher.id
-      );
-    }
-  });
-
-  testQuestions.forEach(function (questionData) {
-    const exam = getExams().find(function (storedExam) {
-      return storedExam.title === questionData.examTitle;
-    });
-
-    if (!exam) {
-      return;
-    }
-
-    const questionAlreadyExists =
-      getQuestionsByExam(exam.id).some(function (storedQuestion) {
-        return storedQuestion.text === questionData.text;
-      });
-
-    if (questionAlreadyExists) {
-      return;
-    }
-
-    addQuestion(
-      exam.id,
-      questionData.type,
-      questionData.text,
-      questionData.options,
-      questionData.correctAnswer,
-      questionData.points,
-      questionData.order
-    );
-  });
 }
 
-seedAvailableExamsTestData();
+function updateResultFeedback (resultId,feedback){
+    const results = getResults();
+    const result = results.find(e => e.id === resultId);
+    if (!result) return null;
+    result.feedback = feedback;
+    setTable('results', results);
+    return result;
+}
+
+function gradeTier(grade){
+    const letter = grade[0]
+    if (letter === 'A') return 'high'
+    if (letter === 'B' || letter === 'C') return 'mid'
+    return 'low'
+}
+
+function gradeCalc(score){
+  let grade
+  if (score >= 90) grade = 'A';
+    else if (score >= 80) grade = 'B';
+    else if (score >= 70) grade = 'C';
+    else if (score >= 60) grade = 'D';
+    else if (score >= 50) grade = 'F';
+  return grade
+}
