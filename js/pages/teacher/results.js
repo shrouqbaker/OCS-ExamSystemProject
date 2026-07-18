@@ -126,12 +126,18 @@ function getReviews(){
 
 function addToTable(name,title,date,score,grade,resultId){
     const tier = gradeTier(grade);
-
+    const initials = name
+                .split(" ")
+                .map(word => word[0])
+                .join("")
+                .substring(0, 2)
+                .toUpperCase();
+                
     const row = document.createElement("tr")
     row.innerHTML=`
   <td>
     <div class="results-table__student">
-      <img src="../assets/images/avatar-placeholder.png" alt="" class="results-table__avatar">
+        <div class="student-avatar results-table__avatar">${initials}</div>
       <span class="results-table__student-name">${name}</span>
     </div>
   </td>
