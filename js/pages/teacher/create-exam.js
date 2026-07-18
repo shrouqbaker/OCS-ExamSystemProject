@@ -96,7 +96,6 @@ const modal=document.getElementById("questionTypeModal")
         })
     });
 }
-
 function mcpQuestion(){
     const div = document.createElement("div")
     div.innerHTML=`<form class="question-card question-card--purple" data-type="mcq">
@@ -119,25 +118,25 @@ function mcpQuestion(){
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="radio" name="correct" value="o1">
-        <input type="text" class="question-card__option-input" value="Option A" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option A">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="radio" name="correct" value="o2">
-        <input type="text" class="question-card__option-input" value="Option B" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option B">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="radio" name="correct" value="o3">
-        <input type="text" class="question-card__option-input" value="Option C" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option C">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="radio" name="correct" value="o4">
-        <input type="text" class="question-card__option-input" value="Option D" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option D">
       </label>
     </div>
   </div>
@@ -170,25 +169,25 @@ const div = document.createElement("div")
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="checkbox" name="correct" value="o1">
-        <input type="text" class="question-card__option-input" value="Option A" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option A">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="checkbox" name="correct" value="o2">
-        <input type="text" class="question-card__option-input" value="Option B" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option B">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="checkbox" name="correct" value="o3">
-        <input type="text" class="question-card__option-input" value="Option C" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option C">
       </label>
     </div>
     <div class="col-md-6">
       <label class="question-card__option">
         <input type="checkbox" name="correct" value="o4">
-        <input type="text" class="question-card__option-input" value="Option D" placeholder="Option text">
+        <input type="text" class="question-card__option-input" placeholder="Option D">
       </label>
     </div>
   </div>
