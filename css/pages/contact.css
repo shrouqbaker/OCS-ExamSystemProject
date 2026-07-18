@@ -56,6 +56,9 @@
   background-color: var(--color-secondary-light);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .info-card__title {
