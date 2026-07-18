@@ -178,21 +178,50 @@ function renderQuestions() {
     );
   });
 }
+function getOptionKey(option) {
+  if (
+    typeof option === "object" &&
+    option !== null &&
+    !Array.isArray(option)
+  ) {
+    return Object.keys(option)[0];
+  }
 
+  return String(option);
+}
+
+function getOptionValue(option) {
+  if (
+    typeof option === "object" &&
+    option !== null &&
+    !Array.isArray(option)
+  ) {
+    return Object.values(option)[0];
+  }
+
+  return option;
+}
 function createAnswerField(question) {
   if (
     question.type === "mcq" ||
-    question.type === "trueFalse"
+    question.type === "multiAnswer"
   ) {
+    const inputType =
+      question.type === "multiAnswer"
+        ? "checkbox"
+        : "radio";
+
     return question.options
       .map(function (option, index) {
+        const optionKey = getOptionKey(option);
+        const optionValue = getOptionValue(option);
+
         return `
           <label class="question-option">
-
             <input
-              type="radio"
+              type="${inputType}"
               name="question_${question.id}"
-              value="${index}"
+              value="${escapeHTML(optionKey)}"
               class="exam-answer"
             >
 
@@ -201,22 +230,57 @@ function createAnswerField(question) {
             </span>
 
             <span class="option-text">
-              ${escapeHTML(option)}
+              ${escapeHTML(optionValue)}
             </span>
-
           </label>
         `;
       })
       .join("");
   }
 
+  if (question.type === "trueFalse") {
+    return `
+      <label class="question-option">
+        <input
+          type="radio"
+          name="question_${question.id}"
+          value="true"
+          class="exam-answer"
+        >
+
+        <span class="option-text">
+          True
+        </span>
+      </label>
+
+      <label class="question-option">
+        <input
+          type="radio"
+          name="question_${question.id}"
+          value="false"
+          class="exam-answer"
+        >
+
+        <span class="option-text">
+          False
+        </span>
+      </label>
+    `;
+  }
+
   if (
     question.type === "shortAnswer" ||
     question.type === "numerical"
   ) {
+    const inputType =
+      question.type === "numerical" ||
+      typeof question.correctAnswer === "number"
+        ? "number"
+        : "text";
+
     return `
       <input
-        type="text"
+        type="${inputType}"
         name="question_${question.id}"
         class="short-answer-input exam-answer"
         placeholder="Enter your answer"
@@ -318,28 +382,54 @@ function updateExamProgress() {
 }
 
 function getStudentAnswer(question) {
-  const selectedRadio =
-    document.querySelector(
+  if (question.type === "multiAnswer") {
+    const checkedAnswers = document.querySelectorAll(
       `[name="question_${question.id}"]:checked`
     );
 
-  if (selectedRadio) {
-    const optionIndex =
-      Number(selectedRadio.value);
-
-    return question.options[optionIndex] ?? "";
+    return Array.from(checkedAnswers).map(function (input) {
+      return input.value;
+    });
   }
 
-  const textInput =
-    document.querySelector(
-      `[name="question_${question.id}"]:not([type="radio"])`
+  if (question.type === "mcq") {
+    const selectedAnswer = document.querySelector(
+      `[name="question_${question.id}"]:checked`
     );
 
-  if (textInput) {
-    return textInput.value.trim();
+    return selectedAnswer
+      ? selectedAnswer.value
+      : null;
   }
 
-  return null;
+  if (question.type === "trueFalse") {
+    const selectedAnswer = document.querySelector(
+      `[name="question_${question.id}"]:checked`
+    );
+
+    if (!selectedAnswer) {
+      return null;
+    }
+
+    return selectedAnswer.value === "true";
+  }
+
+  const input = document.querySelector(
+    `[name="question_${question.id}"]`
+  );
+
+  if (!input || input.value.trim() === "") {
+    return null;
+  }
+
+  if (
+    question.type === "numerical" ||
+    typeof question.correctAnswer === "number"
+  ) {
+    return Number(input.value);
+  }
+
+  return input.value.trim();
 }
 
 function updateNavigationButton(
@@ -570,11 +660,10 @@ function calculateExamResult(answers) {
     const studentAnswer =
       answer ? answer.studentAnswer : "";
 
-    const isCorrect =
-      normalizeAnswer(studentAnswer) ===
-      normalizeAnswer(
-        question.correctAnswer
-      );
+    const isCorrect = compareQuestionAnswers(
+  studentAnswer,
+  question.correctAnswer
+);
 
     if (isCorrect) {
       earnedPoints += questionPoints;

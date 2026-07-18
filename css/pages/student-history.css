@@ -1,0 +1,390 @@
+/* ========================================
+   Student Exam History
+======================================== */
+
+.exam-history-page {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* Hero */
+
+.history-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: center;
+  gap: 38px;
+
+  padding: 36px 40px;
+  margin-bottom: 32px;
+
+  background-color: var(--color-background-alt);
+  border-radius: 24px;
+}
+
+.history-hero__content {
+  min-width: 0;
+}
+
+.history-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 7px 13px;
+  margin-bottom: 14px;
+
+  color: var(--color-secondary-dark);
+  font-size: 12px;
+  font-weight: 700;
+
+  background-color: var(--color-secondary-light);
+  border-radius: 50px;
+}
+
+.history-hero h1 {
+  margin: 0 0 9px;
+
+  color: var(--color-primary-dark);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.history-hero p {
+  max-width: 570px;
+  margin: 0 0 22px;
+
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.history-hero__count {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px 16px;
+
+  background-color: var(--color-background);
+  border-radius: 14px;
+}
+
+.history-hero__count strong {
+  color: var(--color-primary-dark);
+  font-size: 24px;
+}
+
+.history-hero__count span {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.history-hero__image {
+  overflow: hidden;
+
+  width: 100%;
+  height: 205px;
+
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(10, 16, 19, 0.12);
+}
+
+.history-hero__image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* History list */
+
+.history-list {
+  display: grid;
+  gap: 20px;
+}
+
+/* History card */
+
+.history-card {
+  --history-accent: var(--color-primary-dark);
+
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+
+  padding: 22px 24px;
+
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-left: 6px solid var(--history-accent);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(10, 16, 19, 0.08);
+}
+
+.history-card--perfect,
+.history-card--mastered {
+  --history-accent: var(--color-primary-dark);
+}
+
+.history-card--completed {
+  --history-accent: var(--color-secondary);
+}
+
+.history-card--failed {
+  --history-accent: var(--color-danger);
+}
+
+/* Card icon */
+
+.history-card__icon {
+  display: grid;
+  place-items: center;
+
+  width: 52px;
+  height: 52px;
+
+  color: var(--history-accent);
+  font-size: 22px;
+
+  background-color: var(--color-background-alt);
+  border-radius: 15px;
+}
+
+/* Card content */
+
+.history-card__content {
+  min-width: 0;
+}
+
+.history-card__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 14px;
+}
+
+.history-card h2 {
+  margin: 0 0 8px;
+
+  color: var(--color-text-primary);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.history-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+
+  color: var(--color-text-secondary);
+  font-size: 11px;
+}
+
+.history-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.history-status {
+  padding: 4px 10px;
+
+  color: var(--history-accent);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  background-color: var(--color-background-alt);
+  border-radius: 50px;
+}
+
+.history-grade {
+  flex: 0 0 auto;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  color: var(--history-accent);
+  font-size: 18px;
+  font-weight: 800;
+
+  background-color: var(--color-background-alt);
+  border-radius: 50%;
+}
+
+/* Feedback */
+
+.history-feedback {
+  padding: 13px 17px;
+  margin: 0;
+
+  color: var(--color-text-secondary);
+
+  background-color: var(--color-background-alt);
+  border-left: 3px solid var(--history-accent);
+  border-radius: 14px;
+}
+
+.history-feedback p {
+  margin: 0 0 5px;
+
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.history-feedback cite {
+  color: var(--history-accent);
+  font-size: 11px;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Review button */
+
+.history-review-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-width: 145px;
+  padding: 12px 18px;
+
+  color: var(--color-text-inverse);
+  font-size: 12px;
+  font-weight: 700;
+
+  background-color: var(--history-accent);
+  border: 0;
+  border-radius: 50px;
+
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.history-review-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Empty history */
+
+.history-empty {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+}
+
+.history-empty i {
+  display: block;
+
+  margin-bottom: 14px;
+
+  color: var(--color-primary-dark);
+  font-size: 52px;
+}
+
+.history-empty h2 {
+  margin-bottom: 8px;
+
+  color: var(--color-text-primary);
+}
+
+.history-empty p {
+  color: var(--color-text-secondary);
+}
+
+.history-empty a {
+  display: inline-block;
+
+  padding: 12px 20px;
+  margin-top: 10px;
+
+  color: var(--color-text-inverse);
+  font-weight: 700;
+  text-decoration: none;
+
+  background-color: var(--color-primary-dark);
+  border-radius: 50px;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .exam-history-page {
+    padding: 25px 20px;
+  }
+
+  .history-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .history-hero__image {
+    height: 190px;
+  }
+
+  .history-card {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .history-review-button {
+    grid-column: 1 / -1;
+
+    width: 100%;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 576px) {
+  .exam-history-page {
+    padding: 20px 14px;
+  }
+
+  .history-hero {
+    padding: 24px 20px;
+  }
+
+  .history-hero h1 {
+    font-size: 29px;
+  }
+
+  .history-card {
+    grid-template-columns: 1fr;
+    gap: 15px;
+
+    padding: 20px;
+  }
+
+  .history-card__heading {
+    flex-direction: column;
+  }
+
+  .history-card__icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .history-grade {
+    width: 42px;
+    height: 42px;
+  }
+}

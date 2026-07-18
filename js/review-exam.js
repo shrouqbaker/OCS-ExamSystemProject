@@ -101,8 +101,8 @@ function renderReviewQuestions(answerReview) {
         ? "review-question--correct"
         : "review-question--incorrect";
 
-    questionCard.className =
-      `review-question ${questionStatusClass}`;
+   questionCard.className =
+  `review-question ${questionStatusClass} review-question--${question.type}`;
 
     questionCard.innerHTML = `
       <div class="review-question__header">
@@ -116,7 +116,16 @@ function renderReviewQuestions(answerReview) {
           <h2>
             ${escapeHTML(question.text)}
           </h2>
-
+${
+  question.type === "multiAnswer"
+    ? `
+      <span class="multiple-answer-badge">
+        <i class="bi bi-check2-square"></i>
+        Multiple answers
+      </span>
+    `
+    : ""
+}
           <span class="review-question__status">
             ${
               question.isCorrect
@@ -137,13 +146,45 @@ function renderReviewQuestions(answerReview) {
     questionsContainer.appendChild(questionCard);
   });
 }
+function getOptionKey(option) {
+  if (
+    typeof option === "object" &&
+    option !== null &&
+    !Array.isArray(option)
+  ) {
+    return Object.keys(option)[0];
+  }
 
+  return String(option);
+}
+
+function getOptionValue(option) {
+  if (
+    typeof option === "object" &&
+    option !== null &&
+    !Array.isArray(option)
+  ) {
+    return Object.values(option)[0];
+  }
+
+  return String(option);
+}
 function createReviewContent(question) {
   if (
     question.type === "mcq" ||
-    question.type === "trueFalse"
+    question.type === "multiAnswer"
   ) {
     return createOptionsReview(question);
+  }
+
+  if (question.type === "trueFalse") {
+    return createOptionsReview({
+      ...question,
+      options: [
+        { true: "True" },
+        { false: "False" }
+      ]
+    });
   }
 
   if (
@@ -165,31 +206,34 @@ function createOptionsReview(question) {
     ? question.options
     : [];
 
+  const correctAnswers = Array.isArray(question.correctAnswer)
+    ? question.correctAnswer.map(String)
+    : [String(question.correctAnswer)];
+
+  const studentAnswers = Array.isArray(question.studentAnswer)
+    ? question.studentAnswer.map(String)
+    : [String(question.studentAnswer)];
+
   return `
     <div class="review-options-grid">
 
       ${options
         .map(function (option, index) {
+          const optionKey = getOptionKey(option);
+          const optionValue = getOptionValue(option);
+
           const isCorrectOption =
-            normalizeAnswer(option) ===
-            normalizeAnswer(
-              question.correctAnswer
-            );
+            correctAnswers.includes(String(optionKey));
 
           const isStudentAnswer =
-            normalizeAnswer(option) ===
-            normalizeAnswer(
-              question.studentAnswer
-            );
+            studentAnswers.includes(String(optionKey));
 
           let optionClass = "";
           let optionIcon =
             `<i class="bi bi-circle"></i>`;
 
           if (isCorrectOption) {
-            optionClass =
-              "review-option--correct";
-
+            optionClass = "review-option--correct";
             optionIcon =
               `<i class="bi bi-check-circle-fill"></i>`;
           }
@@ -198,9 +242,7 @@ function createOptionsReview(question) {
             isStudentAnswer &&
             !isCorrectOption
           ) {
-            optionClass =
-              "review-option--incorrect";
-
+            optionClass = "review-option--incorrect";
             optionIcon =
               `<i class="bi bi-x-circle-fill"></i>`;
           }
@@ -213,7 +255,7 @@ function createOptionsReview(question) {
               </span>
 
               <span class="review-option__text">
-                ${escapeHTML(option)}
+                ${escapeHTML(optionValue)}
               </span>
 
               <span class="review-option__icon">
