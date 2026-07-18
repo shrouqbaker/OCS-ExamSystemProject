@@ -1,0 +1,297 @@
+/*================ PROFILE HERO ================*/
+.colorwhite {
+    color: var(--color-text-inverse) !important;
+}
+.profile-hero {
+
+    background: linear-gradient(135deg,
+            var(--color-secondary),
+            var(--color-secondary-dark));
+
+    border-radius: var(--radius-lg);
+
+    padding: 40px;
+
+    color: var(--color-text-inverse);
+
+    box-shadow: var(--shadow-md);
+}
+
+.profile-avatar {
+
+    width: 120px;
+
+    height: 120px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 5px solid rgba(255, 255, 255, .35);
+
+    background: var(--color-background);
+}
+
+.profile-role {
+
+    display: inline-block;
+
+    margin-top: 8px;
+
+    padding: 8px 18px;
+
+    border-radius: var(--radius-full);
+
+    background: rgba(255, 255, 255, .18);
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.profile-id {
+
+    margin: 0;
+
+    opacity: .9;
+    color: var(--color-text-inverse);
+
+}
+
+.profile-score-card {
+
+    background: rgba(255, 255, 255, .15);
+
+    border-radius: var(--radius-lg);
+
+    padding: 30px;
+
+    text-align: center;
+
+    backdrop-filter: blur(6px);
+}
+
+.score-icon {
+
+    font-size: 40px;
+
+    margin-bottom: 15px;
+}
+
+.profile-score-card h3 {
+
+    font-size: 40px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+
+/*================ PROFILE CARD ================*/
+
+.profile-card {
+
+    background: var(--color-background);
+
+    border-radius: var(--radius-lg);
+
+    padding: 30px;
+
+    box-shadow: var(--shadow-sm);
+
+    border: 1px solid var(--color-background-alt);
+}
+
+.profile-card h4 {
+
+    color: var(--color-secondary-dark);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+
+/*================ INFO BOX ================*/
+
+.info-box {
+
+    background: var(--color-background-muted);
+
+    border-radius: var(--radius-md);
+
+    padding: 18px;
+}
+
+.info-box span {
+
+    display: block;
+
+    color: var(--color-secondary);
+
+    font-size: var(font-size-base);
+
+    margin-bottom: 6px;
+}
+
+.info-box strong {
+
+    font-size: var(--font-size-base);
+
+    color: var(--color-text-primary);
+}
+
+
+/*================ RIGHT CARD ================*/
+
+.stats-side-card {
+
+    background: var(--color-background);
+
+    border-radius: var(--radius-lg);
+
+    padding: 30px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.mini-stat {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 18px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.mini-stat:last-child {
+
+    border-bottom: none;
+}
+
+.stat-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 22px;
+}
+
+.stat-icon.green {
+
+    background: var(--color-success-bg);
+
+    color: var(--color-success);
+}
+
+.stat-icon.purple {
+
+    background: var(--color-secondary-light);
+
+    color: var(--color-secondary);
+}
+
+.stat-icon.orange {
+
+    background: #FFF4E5;
+
+    color: #F59E0B;
+}
+
+.mini-stat h3 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+.mini-stat span {
+
+    color: var(--color-text-secondary);
+
+    font-size: 14px;
+}
+
+
+
+/*================ HOVER ================*/
+
+.profile-card,
+.stats-side-card,
+.profile-score-card {
+
+    transition: .3s;
+}
+
+.profile-card:hover,
+.stats-side-card:hover,
+.profile-score-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: var(--shadow-md);
+}
+
+
+/*================ RESPONSIVE ================*/
+
+@media(max-width:992px) {
+
+    .profile-hero {
+
+        text-align: center;
+    }
+
+    .profile-avatar {
+
+        margin: auto;
+    }
+
+    .profile-score-card {
+
+        margin-top: 30px;
+    }
+
+}
+
+@media(max-width:768px) {
+
+    .profile-avatar {
+
+        width: 95px;
+
+        height: 95px;
+    }
+
+    .profile-hero {
+
+        padding: 25px;
+    }
+
+    .profile-card,
+    .stats-side-card {
+
+        padding: 22px;
+    }
+
+}

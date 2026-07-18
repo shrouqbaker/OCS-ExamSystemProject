@@ -345,5 +345,3 @@ function getAnswerReview(resultId){
         'isCorrect': studentAnswer === question.correctAnswer,}
     })
 }
-
-
