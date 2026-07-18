@@ -220,7 +220,6 @@ function addResult(studentId, examId, answers, score, grade, passed, feedback) {
 
 
 //Backend
-
 function seedDatabase(){
 
     if (getUsers().length > 0) return;
@@ -261,32 +260,72 @@ function seedDatabase(){
         teacher.id
     );
 
-    /* Questions - 20 total, generated in a loop */
-    const questions = [];
-    for (let i = 1; i <= 20; i++) {
-        questions.push(addQuestion(
-            exam.id,
-            "mcq",
-            `Sample Question ${i}: What is the correct option?`,
-            [{ o1: "Option A" }, { o2: "Option B" }, { o3: "Option C" }, { o4: "Option D" }],
-            "o1",
-            5,
-            i
-        ));
-    }
+    /* Questions - 20 real Molecular Biology questions */
+    const questionData = [
+        { text: "What is the basic unit of life?", options: ["Atom", "Cell", "Molecule", "Tissue"], correct: 1 },
+        { text: "Which organelle is known as the powerhouse of the cell?", options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"], correct: 2 },
+        { text: "DNA stands for:", options: ["Deoxyribonucleic acid", "Dioxyribose nucleic acid", "Deoxyribose nuclear acid", "Dual nucleic acid"], correct: 0 },
+        { text: "Which base pairs with Adenine in DNA?", options: ["Cytosine", "Guanine", "Thymine", "Uracil"], correct: 2 },
+        { text: "Which base replaces Thymine in RNA?", options: ["Adenine", "Cytosine", "Guanine", "Uracil"], correct: 3 },
+        { text: "What is the process of copying DNA called?", options: ["Translation", "Transcription", "Replication", "Mutation"], correct: 2 },
+        { text: "What is the process of making protein from mRNA called?", options: ["Replication", "Translation", "Transcription", "Splicing"], correct: 1 },
+        { text: "Where does transcription occur in eukaryotic cells?", options: ["Cytoplasm", "Nucleus", "Mitochondria", "Ribosome"], correct: 1 },
+        { text: "What are the building blocks of proteins?", options: ["Nucleotides", "Amino acids", "Fatty acids", "Monosaccharides"], correct: 1 },
+        { text: "Which organelle synthesizes proteins?", options: ["Ribosome", "Lysosome", "Peroxisome", "Vacuole"], correct: 0 },
+        { text: "What type of bond holds amino acids together in a protein?", options: ["Hydrogen bond", "Ionic bond", "Peptide bond", "Glycosidic bond"], correct: 2 },
+        { text: "Which molecule carries genetic information from DNA to ribosomes?", options: ["tRNA", "mRNA", "rRNA", "DNA polymerase"], correct: 1 },
+        { text: "What is the function of the cell membrane?", options: ["Energy production", "Protein synthesis", "Selective permeability", "DNA storage"], correct: 2 },
+        { text: "Which organelle contains digestive enzymes?", options: ["Lysosome", "Peroxisome", "Nucleus", "Golgi apparatus"], correct: 0 },
+        { text: "What is the primary energy currency of the cell?", options: ["Glucose", "ATP", "NADH", "Protein"], correct: 1 },
+        { text: "In which phase of the cell cycle is DNA replicated?", options: ["G1", "S phase", "G2", "Mitosis"], correct: 1 },
+        { text: "What structure surrounds the genetic material in a eukaryotic cell?", options: ["Cell wall", "Nuclear envelope", "Plasma membrane", "Cytoskeleton"], correct: 1 },
+        { text: "Which type of RNA makes up ribosomes?", options: ["mRNA", "tRNA", "rRNA", "siRNA"], correct: 2 },
+        { text: "What is a mutation?", options: ["A change in protein structure", "A change in the DNA sequence", "A type of cell division", "A form of RNA"], correct: 1 },
+        { text: "Which enzyme unwinds the DNA double helix during replication?", options: ["DNA polymerase", "Helicase", "Ligase", "Primase"], correct: 1 }
+    ];
 
-    /* Results - only the first 10 students (half) have submitted */
+    const questions = questionData.map(function (q, i) {
+        const options = q.options.map(function (text, idx) {
+            const key = "o" + (idx + 1);
+            const obj = {};
+            obj[key] = text;
+            return obj;
+        });
+        const correctKey = "o" + (q.correct + 1);
+
+        return addQuestion(exam.id, "mcq", q.text, options, correctKey, 5, i + 1);
+    });
+
+    /* Results - only the first 10 students (half) have submitted, with a
+       genuinely varied number of wrong answers per student instead of one
+       uniform formula, so scores actually spread across a believable range. */
+    const wrongCountPerStudent = [0, 1, 2, 3, 4, 5, 7, 9, 11, 14];
+
     for (let i = 0; i < 10; i++) {
-        const answers = questions.map((q, idx) => ({
-            questionId: q.id,
-            studentAnswer: idx % 3 === 0 ? "o2" : "o1" // mostly correct, a few wrong for variety
-        }));
+        const wrongCount = wrongCountPerStudent[i];
 
-        const correctCount = answers.filter((a, idx) => a.studentAnswer === questions[idx].correctAnswer).length;
+        // Pick which specific questions this student gets wrong, spread
+        // across the exam rather than always the first N.
+        const wrongIndexes = new Set();
+        for (let w = 0; w < wrongCount; w++) {
+            wrongIndexes.add((w * 3 + i) % questions.length);
+        }
+
+        const answers = questions.map(function (q, idx) {
+            if (wrongIndexes.has(idx)) {
+                // pick a real wrong option, never the correct one
+                const wrongOptionIndex = (questionData[idx].correct + 1) % 4;
+                const wrongKey = "o" + (wrongOptionIndex + 1);
+                return { questionId: q.id, studentAnswer: wrongKey };
+            }
+            return { questionId: q.id, studentAnswer: q.correctAnswer };
+        });
+
+        const correctCount = questions.length - wrongIndexes.size;
         const score = Math.round((correctCount / questions.length) * 100);
-        const grade = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F";
+        const grade = gradeCalc(score);
 
-        addResult(students[i].id, exam.id, answers, score, grade, score >= 60, "");
+        addResult(students[i].id, exam.id, answers, score, grade, score >= 50, "");
     }
 }
 seedDatabase()
