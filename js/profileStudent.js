@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("completedExams").textContent = results.length;
 
-
     let average = 0;
 
     if (results.length > 0) {
