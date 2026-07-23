@@ -23,17 +23,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stuCard(studentInfo.fullName , examInfo.title , examInfo.dateTime , examInfo.duration , resultInfo.score, resultInfo.grade)
 
-    countCard()
+    countCard()  
 
     result.forEach(element => {
+        const pts = Number(element.points) || 1;
         if (element.type === "mcq")
-            mcp(element.order ,element.isCorrect, element.text,element.options,element.correctAnswer,element.studentAnswer)
+            mcp(element.order, element.isCorrect, element.text, element.options, element.correctAnswer, element.studentAnswer, pts)
         if (element.type === "multiAnswer")
-            multiAnswer(element.order ,element.isCorrect, element.text,element.options,element.correctAnswer,element.studentAnswer)
+            multiAnswer(element.order, element.isCorrect, element.text, element.options, element.correctAnswer, element.studentAnswer, pts)
         if (element.type === "trueFalse")
-            trueFalse(element.order ,element.isCorrect, element.text,element.correctAnswer,element.studentAnswer)
+            trueFalse(element.order, element.isCorrect, element.text, element.correctAnswer, element.studentAnswer, pts)
         if (element.type === "shortAnswer")
-            shortAnswer(element.order ,element.isCorrect, element.text,element.correctAnswer,element.studentAnswer)
+            shortAnswer(element.order, element.isCorrect, element.text, element.correctAnswer, element.studentAnswer, pts)
     });
 
     feedbackbtn.addEventListener("click",function(){
@@ -84,7 +85,7 @@ function stuCard(name, title, date, duration, score, grade){
 
 <div class="exam-review__divider"></div>
 
-<div class="exam-review__score-circle exam-review__score-circle--${tier}">
+<div class="exam-review__score-circle exam-review__score-circle--${tier}" style="--score-pct: ${score}%;">
   <span class="exam-review__score-value exam-review__score-value--${tier}">${score}%</span>
   <span class="exam-review__score-label">SCORE</span>
 </div>`;
@@ -93,16 +94,19 @@ function countCard(){
     document.getElementById("questionsStatCard").innerHTML=`<span class="exam-review__stat-label">QUESTIONS</span>
 <span class="exam-review__stat-value">${result.length} Total</span>`
 }
-function mcp(order, isCorrect, text, options, correctAnswer, studentAnswer){
+function mcp(order, isCorrect, text, options, correctAnswer, studentAnswer, points = 1){
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
     <span class="exam-review-question__type-badge exam-review-question__type-badge--purple">
       Question ${order} &bull; Multiple Choice
     </span>
-    <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
-      <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
-    </span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="exam-review-question__points-badge">${isCorrect ? points : 0} / ${points} ${points === 1 ? 'pt' : 'pts'}</span>
+      <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
+        <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
+      </span>
+    </div>
   </div>
 
   <p class="exam-review-question__text">${text}</p>
@@ -118,16 +122,19 @@ function mcp(order, isCorrect, text, options, correctAnswer, studentAnswer){
 </div>`
     questionsReview.appendChild(div.firstElementChild)
 }
-function multiAnswer(order, isCorrect, title, options, correctAnswer, studentAnswer){
+function multiAnswer(order, isCorrect, title, options, correctAnswer, studentAnswer, points = 1){
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
     <span class="exam-review-question__type-badge exam-review-question__type-badge--purple">
       Question ${order} &bull; Multiple Answers
     </span>
-    <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
-      <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
-    </span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="exam-review-question__points-badge">${isCorrect ? points : 0} / ${points} ${points === 1 ? 'pt' : 'pts'}</span>
+      <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
+        <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
+      </span>
+    </div>
   </div>
 
   <p class="exam-review-question__text">${title}</p>
@@ -165,50 +172,68 @@ function multiAnswer(order, isCorrect, title, options, correctAnswer, studentAns
     questionsReview.appendChild(div.firstElementChild)
 }
 
-function trueFalse(order, isCorrect, text, correctAnswer, studentAnswer){
+function trueFalse(order, isCorrect, text, correctAnswer, studentAnswer, points = 1){
+    const isCorrectTrue = String(correctAnswer).toLowerCase() === 'true';
+    const isStudentTrue = studentAnswer !== undefined && studentAnswer !== null && String(studentAnswer).toLowerCase() === 'true';
+    const isStudentFalse = studentAnswer !== undefined && studentAnswer !== null && String(studentAnswer).toLowerCase() === 'false';
+
+    const trueClass = isCorrectTrue ? 'exam-review-question__option--correct' : (isStudentTrue ? 'exam-review-question__option--selected-wrong' : '');
+    const falseClass = !isCorrectTrue ? 'exam-review-question__option--correct' : (isStudentFalse ? 'exam-review-question__option--selected-wrong' : '');
+
+    const trueIcon = isCorrectTrue ? '<i class="fa-solid fa-check-circle"></i>' : (isStudentTrue ? '<i class="fa-solid fa-times-circle"></i>' : '');
+    const falseIcon = !isCorrectTrue ? '<i class="fa-solid fa-check-circle"></i>' : (isStudentFalse ? '<i class="fa-solid fa-times-circle"></i>' : '');
+
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
-    <span class="exam-review-question__type-badge exam-review-question__type-badge--green">
+    <span class="exam-review-question__type-badge exam-review-question__type-badge--purple">
       Question ${order} &bull; True/False
     </span>
-    <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
-      <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
-    </span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="exam-review-question__points-badge">${isCorrect ? points : 0} / ${points} ${points === 1 ? 'pt' : 'pts'}</span>
+      <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
+        <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
+      </span>
+    </div>
   </div>
 
   <p class="exam-review-question__text">${text}</p>
 
   <div class="exam-review-question__truefalse">
-    <div class="exam-review-question__option ${correctAnswer === true ? 'exam-review-question__option--correct' : (studentAnswer === true ? 'exam-review-question__option--selected-wrong' : '')}">
-      <i class="fa-solid ${studentAnswer === true ? 'fa-dot-circle' : 'fa-circle'}"></i> True
+    <div class="exam-review-question__option ${trueClass}">
+      <span>True</span>
+      ${trueIcon}
     </div>
-    <div class="exam-review-question__option ${correctAnswer === false ? 'exam-review-question__option--correct' : (studentAnswer === false ? 'exam-review-question__option--selected-wrong' : '')}">
-      <i class="fa-solid ${studentAnswer === false ? 'fa-dot-circle' : 'fa-circle'}"></i> False
+    <div class="exam-review-question__option ${falseClass}">
+      <span>False</span>
+      ${falseIcon}
     </div>
   </div>
 </div>`
     questionsReview.appendChild(div.firstElementChild)
 }
-function shortAnswer(order, isCorrect, text, correctAnswer, studentAnswer){
+function shortAnswer(order, isCorrect, text, correctAnswer, studentAnswer, points = 1){
     const div = document.createElement("div")
     div.innerHTML=`<div class="exam-review-question">
   <div class="exam-review-question__header">
-    <span class="exam-review-question__type-badge exam-review-question__type-badge--gray">
+    <span class="exam-review-question__type-badge exam-review-question__type-badge--purple">
       Question ${order} &bull; Short Answer
     </span>
-    <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
-      <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
-    </span>
+    <div class="d-flex align-items-center gap-2">
+      <span class="exam-review-question__points-badge">${isCorrect ? points : 0} / ${points} ${points === 1 ? 'pt' : 'pts'}</span>
+      <span class="exam-review-question__status exam-review-question__status--${isCorrect ? 'correct' : 'incorrect'}">
+        <i class="fa-solid ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${isCorrect ? 'Correct' : 'Incorrect'}
+      </span>
+    </div>
   </div>
 
   <p class="exam-review-question__text">${text}</p>
 
   <div class="exam-review-question__answer-box">
-    "${studentAnswer ?? ''}"
+    ${studentAnswer ? studentAnswer : 'No answer provided'}
   </div>
 
-  ${!isCorrect ? `<div class="exam-review-question__answer-box">Correct answer: "${correctAnswer}"</div>` : ''}
+  ${!isCorrect ? `<div class="exam-review-question__answer-box mt-2">Correct answer: ${correctAnswer}</div>` : ''}
 </div>`
     questionsReview.appendChild(div.firstElementChild)
 }

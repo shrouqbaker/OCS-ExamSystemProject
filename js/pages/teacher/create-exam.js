@@ -75,9 +75,6 @@ pbtn.addEventListener("click",function(){
     window.location.href = "exams.html";
 })
 
-
-login("dr.ahmad","password123")
-
 function cardQuestion(){
 const modal=document.getElementById("questionTypeModal")
     const qTypes = modal.querySelectorAll("button")

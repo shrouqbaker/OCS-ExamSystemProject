@@ -1,5 +1,5 @@
 .exam-review-page {
-  padding: var(--spacing-2xl) 0;
+  padding: 0;
 }
 
 .exam-review-page__container {
@@ -12,11 +12,16 @@
   align-items: center;
   gap: var(--spacing-sm);
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .exam-review__breadcrumb a {
   color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+.exam-review__breadcrumb a:hover {
+  color: var(--color-primary-dark);
 }
 
 .exam-review__breadcrumb strong {
@@ -27,16 +32,16 @@
   margin-bottom: var(--spacing-lg);
 }
 
-/* ===== Student Info Card ===== */
+/* ===== Larger Student Info Card ===== */
 .exam-review__student-card {
   display: flex;
   align-items: center;
   gap: var(--spacing-xl);
   background-color: var(--color-background);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-xl);
-  height: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  padding: 36px 36px;
 }
 
 .exam-review__avatar {
@@ -48,11 +53,15 @@
 }
 
 .exam-review__student-name {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: 6px;
 }
 
 .exam-review__exam-title {
+  font-size: 1.05rem;
   color: var(--color-text-secondary);
   margin-bottom: var(--spacing-sm);
 }
@@ -63,7 +72,7 @@
 
 .exam-review__meta {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
   flex-wrap: wrap;
 }
 
@@ -73,8 +82,8 @@
   gap: var(--spacing-xs);
   background-color: var(--color-background-alt);
   border-radius: var(--radius-full);
-  padding: var(--spacing-xs) var(--spacing-md);
-  font-size: var(--font-size-sm);
+  padding: 6px 14px;
+  font-size: 0.9rem;
   color: var(--color-text-secondary);
 }
 
@@ -82,34 +91,47 @@
   width: 1px;
   align-self: stretch;
   background-color: var(--color-border);
+  margin: 0 var(--spacing-md);
 }
 
 .exam-review__score-circle {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 110px;
   height: 110px;
-  border-radius: var(--radius-full);
-  border: 6px solid var(--color-primary);
+  border-radius: 50%;
+  background: conic-gradient(var(--score-color, var(--color-primary)) var(--score-pct, 0%), #e2e8f0 0deg);
+  border: none;
   flex-shrink: 0;
 }
 
+.exam-review__score-circle::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  background-color: var(--color-background);
+  border-radius: 50%;
+  z-index: 1;
+}
+
 .exam-review__score-circle--high {
-  border-color: var(--color-success);
-  
+  --score-color: var(--color-success);
 }
 
 .exam-review__score-circle--mid {
-  border-color: var(--color-secondary);
+  --score-color: var(--color-secondary);
 }
 
 .exam-review__score-circle--low {
-  border-color: var(--color-danger);
+  --score-color: var(--color-danger);
 }
 
 .exam-review__score-value {
+  position: relative;
+  z-index: 2;
   font-size: 1.75rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-primary-dark);
@@ -129,10 +151,19 @@
 }
 
 .exam-review__score-label {
-  font-size: var(--font-size-sm);
+  position: relative;
+  z-index: 2;
+  font-size: 0.85rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-text-secondary);
   letter-spacing: 0.05em;
+}
+
+/* ===== Sticky Top Sidebar ===== */
+.sticky-top-sidebar {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
 }
 
 /* ===== Stat / Trivia Cards ===== */
@@ -233,6 +264,19 @@
   font-weight: var(--font-weight-bold);
   padding: var(--spacing-xs) var(--spacing-md);
   border-radius: var(--radius-full);
+}
+
+.exam-review-question__points-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-alt);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
 }
 
 .exam-review-question__status--correct {
