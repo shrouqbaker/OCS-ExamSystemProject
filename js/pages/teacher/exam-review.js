@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stuCard(studentInfo.fullName , examInfo.title , examInfo.dateTime , examInfo.duration , resultInfo.score, resultInfo.grade)
 
-    countCard()
+    countCard()  
 
     result.forEach(element => {
         if (element.type === "mcq")
@@ -57,7 +57,7 @@ async function loadTrivia(){
         console.log(data.text);
         
     } catch (error) {
-        console.log('Trivia API unavailable, showing default fact')
+        console.log('Trivia API unavailable, showing    default fact')
     }
 }
 
