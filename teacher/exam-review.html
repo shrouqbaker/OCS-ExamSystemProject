@@ -38,18 +38,40 @@
               <strong>Exam Review</strong>
             </nav>
 
-            <!-- Metrics & Student Information Summary Grid -->
-            <div class="row g-4 exam-review__header-row mb-4">
+            <!-- Metrics, Questions & Sticky Sidebar Grid Layout -->
+            <div class="row g-4 align-items-start">
 
-              <!-- Left Side: Student Info Card Column -->
+              <!-- Left Column: Compact Student Card, Questions Review, and Teacher Feedback -->
               <div class="col-lg-9">
-                <div class="exam-review__student-card d-flex justify-content-between align-items-center" id="studentInfoCard">
+                <!-- Compact Student Info Card -->
+                <div class="exam-review__student-card d-flex justify-content-between align-items-center mb-3" id="studentInfoCard">
                   <!-- Avatar, name, exam title, date, time taken, score circle - filled in by exam-review.js -->
+                </div>
+
+                <!-- Dynamic Question Cards List (Positioned directly below Student Card) -->
+                <div id="questionsReview" class="mb-3">
+                  <!-- Filled in dynamically by exam-review.js -->
+                </div>
+
+                <!-- Teacher Feedback Terminal -->
+                <div id="feedbackSection" class="exam-review-question__feedback p-4 card shadow-sm mb-4">
+                  <div class="exam-review-question__feedback-header mb-3">
+                    <span class="exam-review-question__feedback-title fw-bold">
+                      <i class="fa-solid fa-pen shadow-icon"></i> Teacher Feedback (optional)
+                    </span>
+                  </div>
+                  <textarea id="feedbackTextarea" class="inp w-100 exam-review-question__feedback-textarea mb-3" rows="3" placeholder="Leave an optional comment for this student..."></textarea>
+                  <div class="d-flex justify-content-end align-items-center gap-3">
+                    <span id="feedbackSavedMsg" class="exam-review-question__feedback-saved text-success">
+                      <i class="fa-solid fa-check"></i> Saved!
+                    </span>
+                    <button type="button" id="saveFeedbackBtn" class="exam-review-question__save-btn btn--secondary">Save Feedback</button>
+                  </div>
                 </div>
               </div>
 
-              <!-- Right Side: Sidebar Stat & Trivia Column (Now safely grouped inside the row grid container) -->
-              <div class="col-lg-3">
+              <!-- Right Column: Sticky Sidebar with Stat & Trivia Cards -->
+              <div class="col-lg-3 sticky-top-sidebar">
                 <div class="exam-review__stat-card mb-3" id="questionsStatCard">
                   <!-- "Questions X Total" - filled in by exam-review.js -->
                 </div>
@@ -64,40 +86,7 @@
                 </div>
               </div>
 
-            </div> <!-- Closes .exam-review__header-row -->
-
-            <!-- Dynamic Question Cards Review Injection Slot -->
-           <div class="row g-4">
-              <div class="col-lg-9">
-                
-                <!-- Dynamic Question Cards Review Injection Slot -->
-                <div id="questionsReview" class="mb-4">
-                  <!-- One card per question, filled in by exam-review.js -->
-                </div>
-
-              </div>
-            </div> 
-
-            <!-- Contextual Performance Feedback Terminal -->
-            <div class="row g-4">
-            <div class="col-lg-9">
-
-            <div id="feedbackSection" class="exam-review-question__feedback p-4 card shadow-sm">
-              <div class="exam-review-question__feedback-header mb-3">
-                <span class="exam-review-question__feedback-title fw-bold">
-                  <i class="fa-solid fa-pen shadow-icon"></i> Teacher Feedback (optional)
-                </span>
-              </div>
-              <textarea id="feedbackTextarea" class="inp w-100 exam-review-question__feedback-textarea mb-3" rows="3" placeholder="Leave an optional comment for this student..."></textarea>
-              <div class="d-flex justify-content-end align-items-center gap-3">
-                <span id="feedbackSavedMsg" class="exam-review-question__feedback-saved text-success">
-                  <i class="fa-solid fa-check"></i> Saved!
-                </span>
-                <button type="button" id="saveFeedbackBtn" class="exam-review-question__save-btn btn--secondary">Save Feedback</button>
-              </div>
-            </div>
-            </div>
-            </div>
+            </div> <!-- Closes .row -->
 
           </div>
         </section>

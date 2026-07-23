@@ -407,3 +407,6 @@
 .review-option__letter {
   border-radius: 6px;
 }
+.short-review-grid--single {
+  grid-template-columns: minmax(0, 300px);
+}

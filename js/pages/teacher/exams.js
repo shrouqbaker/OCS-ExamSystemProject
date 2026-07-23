@@ -45,28 +45,26 @@ function card(container1 , title,dateTime , status , id){
     const date = document.createElement("p")
     const btn = document.createElement("a")
 
-    icon.classList.add("exam-card__icon")
-    icon.classList.add("fa-solid")
-    icon.classList.add("fa-flask")
-    toggle.className="tog"
+    icon.className = "exam-card__icon fa-solid fa-flask"
+    toggle.className = "tog"
     toggle.type = "checkbox";
     toggle.checked = status === "active"
-    toggle.dataset.id=id
-    top.className="exam-card__header"
-    label.className="toggle"
-    span.className="toggle__track"
-    container.className="exam-card"
+    toggle.dataset.id = id
+    top.className = "exam-card__header"
+    label.className = "toggle"
+    span.className = "toggle__track"
+    container.className = "exam-card"
     
-    btn.className="btn--secondary"
-    btn.innerHTML="View Results"
+    btn.className = "btn--secondary"
+    btn.innerHTML = `<i class="bi bi-bar-chart-fill me-1"></i> View Results`
     btn.href = `results.html?examId=${id}`
-    titled.className="exam-card__title"
-    titled.innerHTML=`${title}`
-    close_container.className="exam-card__closing"
-    close_title.className="exam-card__closing-label"
-    close_title.innerHTML=`CLOSING`
-    date.className="exam-card__closing-date"
-    date.innerHTML=formatExamDate(dateTime)
+    titled.className = "exam-card__title"
+    titled.textContent = title
+    close_container.className = "exam-card__closing"
+    close_title.className = "exam-card__closing-label"
+    close_title.innerHTML = `<i class="bi bi-clock-history me-1"></i> CLOSING`
+    date.className = "exam-card__closing-date"
+    date.innerHTML = formatExamDate(dateTime)
     
     label.appendChild(toggle)
     label.appendChild(span)
@@ -80,7 +78,6 @@ function card(container1 , title,dateTime , status , id){
     container.appendChild(close_container)
     container.appendChild(btn)
     container1.appendChild(container)
-
 }
 
 

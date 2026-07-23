@@ -289,10 +289,37 @@ function createShortAnswerReview(question) {
       ? "No answer"
       : question.studentAnswer;
 
-  const studentAnswerClass =
-    question.isCorrect
-      ? "short-review-answer--correct"
-      : "short-review-answer--incorrect";
+  const correctAnswer =
+    question.correctAnswer === null ||
+    question.correctAnswer === undefined
+      ? "Not provided"
+      : question.correctAnswer;
+
+  if (question.isCorrect) {
+    return `
+      <div class="short-review-grid short-review-grid--single">
+
+        <div class="short-review-group">
+
+          <span class="short-review-label">
+            Your Answer
+          </span>
+
+          <div class="short-review-answer short-review-answer--correct">
+
+            <span>
+              ${escapeHTML(studentAnswer)}
+            </span>
+
+            <i class="bi bi-check-circle-fill"></i>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+  }
 
   return `
     <div class="short-review-grid">
@@ -303,19 +330,13 @@ function createShortAnswerReview(question) {
           Your Answer
         </span>
 
-        <div class="short-review-answer ${studentAnswerClass}">
+        <div class="short-review-answer short-review-answer--incorrect">
 
           <span>
             ${escapeHTML(studentAnswer)}
           </span>
 
-          <i
-            class="bi ${
-              question.isCorrect
-                ? "bi-check-circle-fill"
-                : "bi-x-circle-fill"
-            }"
-          ></i>
+          <i class="bi bi-x-circle-fill"></i>
 
         </div>
 
@@ -330,9 +351,7 @@ function createShortAnswerReview(question) {
         <div class="short-review-answer short-review-answer--correct">
 
           <span>
-            ${escapeHTML(
-              question.correctAnswer
-            )}
+            ${escapeHTML(correctAnswer)}
           </span>
 
           <i class="bi bi-check-circle-fill"></i>

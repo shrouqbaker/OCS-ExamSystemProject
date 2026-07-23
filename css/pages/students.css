@@ -122,37 +122,33 @@
 
 
 .dashboard-table thead th{
-
     padding:20px 24px;
-
     border:none;
-
     font-size:13px;
     font-weight: var(--font-weight-bold);
-
     text-transform:uppercase;
-
     letter-spacing:.05em;
-
-        color: white;
-background-color: var(--color-primary-dark);
+    color: white;
+    background-color: var(--color-primary-dark);
     font-weight:var(--font-weight-bold);
+    white-space: nowrap;
 }
 
 .dashboard-table tbody td{
-
-    padding:22px 24px;
-
+    padding:18px 24px;
     vertical-align:middle;
-
     border-color:#edf2f4;
+    white-space: nowrap;
+}
 
+.dashboard-table tbody td:nth-child(2){
+    white-space: normal;
+    font-weight: 600;
+    color: var(--color-text-primary);
 }
 
 .dashboard-table tbody tr{
-
     transition:.25s;
-
 }
 .dashboard-table tbody tr:hover td{
     background: var(--color-background-muted);
@@ -164,35 +160,22 @@ background-color: var(--color-primary-dark);
 =========================== */
 
 .student-cell{
-
     display:flex;
-
     align-items:center;
-
     gap:14px;
-
+    white-space: nowrap;
 }
 
 .student-avatar{
-
     width:44px;
-
     height:44px;
-
     border-radius:50%;
-
     background:var(--color-secondary-title);
-
     color:var(--color-text-inverse);
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     font-weight:500;
-
 }
 
 
@@ -201,31 +184,24 @@ background-color: var(--color-primary-dark);
 =========================== */
 
 .btn-view{
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border:1.5px solid var(--color-primary-dark);
-
     color:var(--color-primary-dark);
-
     background:none;
-
     border-radius:var(--radius-full);
-
     padding:8px 18px;
-
     font-size:13px;
-
     font-weight:600;
-
+    white-space: nowrap;
+    text-decoration: none;
     transition:.3s;
-
 }
 
 .btn-view:hover{
-
     background:var(--color-primary-dark);
-
     color:white;
-
 }
 
 

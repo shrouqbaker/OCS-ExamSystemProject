@@ -24,13 +24,12 @@
       <!-- Dynamic Topbar Injection Anchor -->
       <div id="topbar"></div>
 
-      <!-- Core Contextual Workspace Container -->
+      <!-- Main Content Container -->
       <div class="dashboard-content">
-        <main class="results-page">
-          <div class="container-fluid results-page__container">
-
-            <h1 class="results-page__title">Student Exam Results</h1>
-            <p class="results-page__subtitle">Track your class's scientific journey. Review individual progress, analyze answer patterns, and celebrate academic milestones.</p>
+        <section class="results-hero mb-4">
+          <h1 class="results-page__title">Student Exam Results</h1>
+          <p class="results-page__subtitle">Track your class's scientific journey. Review individual progress, analyze answer patterns, and celebrate academic milestones.</p>
+        </section>
 
             <div class="row g-4 results-page__stats">
 
@@ -66,49 +65,41 @@
 
             </div>
 
-            <div class="results-table-card">
+        <div class="students-toolbar justify-content-between align-items-center mb-4">
+          <h2 class="fs-4 fw-bold m-0 text-dark" style="font-family: var(--font-heading);">Recent Submissions</h2>
+          <div class="students-search m-0">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchResult" placeholder="Search student name, exam title, or grade...">
+          </div>
+        </div>
 
-              <div class="results-table-card__header">
-                <h2 class="results-table-card__title">Recent Submissions</h2>
-                <span class="results-table-card__live-badge">
-                  <i class="fa-solid fa-circle"></i> LIVE UPDATES
-                </span>
-              </div>
-
+        <section class="dashboard-section">
               <div class="table-responsive">
-                <table class="results-table">
+                <table class="table dashboard-table align-middle">
                   <thead>
                     <tr>
-                      <th>Student</th>
-                      <th>Exam Title</th>
-                      <th>Date Taken</th>
-                      <th>Score</th>
-                      <th>Grade</th>
-                      <th>Action</th>
+                      <th style="width: 24%; white-space: nowrap;">Student Name</th>
+                      <th style="width: 32%;">Exam Title</th>
+                      <th style="width: 14%; white-space: nowrap;">Date Taken</th>
+                      <th style="width: 15%;">Score</th>
+                      <th style="width: 5%; text-align: center;">Grade</th>
+                      <th class="text-end" style="width: 10%; white-space: nowrap;">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="resultsTableBody">
-                    <!-- Rows are rendered here by results.js, sourced from getResults() in db.js -->
+                    <!-- Rows rendered dynamically by results.js -->
                   </tbody>
                 </table>
               </div>
 
-              <div class="results-table-card__footer">
-                <span id="resultsCountLabel">Showing 0 of 0 results</span>
-                <div class="results-table-card__pagination">
-                  <button type="button" id="prevPageBtn" aria-label="Previous page">
-                    <i class="fa-solid fa-chevron-left"></i>
-                  </button>
-                  <button type="button" id="nextPageBtn" aria-label="Next page">
-                    <i class="fa-solid fa-chevron-right"></i>
-                  </button>
+              <div class="students-footer">
+                <span id="resultsCountLabel">Showing 0 results</span>
+                <div id="pagination">
+                  <!-- Circular numbered pagination rendered dynamically by results.js -->
                 </div>
               </div>
+            </section>
 
-            </div>
-
-          </div>
-        </main>
       </div>
     </main>
   </div>
